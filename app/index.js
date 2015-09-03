@@ -15,12 +15,12 @@ var canvas = $('#js-canvas');
 
 // Reference to the custom Modules
 var CustomBpmnReplace=require('./customReplace/CustomReplace.js'); // affects activities
-var CustomContextPadProvider=require('./customContextPadProvider/CustomContextPadProvider.js'); //affects participants
+//var CustomContextPadProvider=require('./customContextPadProvider/CustomContextPadProvider.js'); //affects participants
 
 // Register the custom Modules
  var overrideModule = {
-   bpmnReplace: [ 'type', CustomBpmnReplace ],
-     contextPadProvider: [ 'type', CustomContextPadProvider ]
+   bpmnReplace: [ 'type', CustomBpmnReplace ]//,
+//     contextPadProvider: [ 'type', CustomContextPadProvider ]
  };
 
 var extensionModule = {
