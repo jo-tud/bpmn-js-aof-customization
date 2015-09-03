@@ -1,0 +1,23 @@
+{
+  "name": "ActivityExtention",
+  "uri": "http://some-company/schema/bpmn/qa",
+  "prefix": "AcEx",
+  "xml": {
+    "tagAlias": "lowerCase"
+  },
+  "types": [
+    {
+      "name": "AppUri",
+      "superClass": [ "Element" ],
+      "properties": [
+        {
+          "name": "uri",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    }
+  ],
+  "emumerations": [],
+  "associations": []
+}
