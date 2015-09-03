@@ -35,5 +35,6 @@
     "diagram-js": "^0.10.0",
     "jquery": "^2.1.1",
     "lodash": "^3.0.0"
+  //  "bpmn-js-properties-panel": "bpmn-io/bpmn-js-properties-panel"
   }
 }
