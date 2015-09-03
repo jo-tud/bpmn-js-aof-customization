@@ -2,7 +2,7 @@
 
 
 // replace ende
-var assign = require('lodash/object/assign')
+var assign = require('lodash/object/assign');
 
 var fs = require('fs');
 
@@ -15,12 +15,12 @@ var canvas = $('#js-canvas');
 
 // Reference to the custom Modules
 var CustomBpmnReplace=require('./customReplace/CustomReplace.js'); // affects activities
-//var CustomContextPadProvider=require('./customContextPadProvider/CustomContextPadProvider.js'); //affects participants
+var CustomContextPadProvider=require('./customContextPadProvider/CustomContextPadProvider.js'); //affects participants
 
 // Register the custom Modules
  var overrideModule = {
-   bpmnReplace: [ 'type', CustomBpmnReplace ]//,
-//     contextPadProvider: [ 'type', CustomContextPadProvider ]
+   bpmnReplace: [ 'type', CustomBpmnReplace ],
+     contextPadProvider: [ 'type', CustomContextPadProvider ]
  };
 
 var extensionModule = {
@@ -32,10 +32,16 @@ var extensionModule = {
 var renderer = new BpmnModeler({ container: canvas , additionalModules: [ overrideModule ]});
 
 //var shape = elementFactory.createShape({ type: 'bpmn:PartnerRole','participantRef':businessObject });
-
+/*
 renderer.on('element.click',function(event){
+  var businessObject=event.element.businessObject;
+  if(!businessObject.resources){
+      var Modeling=require('bpmn-js/lib/features/modeling/modeling');
+      Modeling.updateProperties(businessObject,{'resources':'http://'});
+
+  }
   console.log(event);
-});
+});*/
 //var a=renderer.get('moddle');
 //a.create('bpmn:PartnerRole');
 
