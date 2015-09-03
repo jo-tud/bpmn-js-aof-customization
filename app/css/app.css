@@ -95,4 +95,8 @@ a:link {
   opacity: 1.0;
 }
 .icon-flag{
+  background-image: url('../resources/flag.svg');
+  background-repeat: no-repeat;
+  background-position: right;
+  padding-left:.2em;
 }
