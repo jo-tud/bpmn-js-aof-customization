@@ -162,36 +162,6 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         }
     }
 
-    if (bpmnElement.$instanceOf('bpmn:Task')) {
-
-        assign(actions, {
-            'resource':{
-                group: 'edit',
-                className: 'icon-flag',
-                title: 'Set Resource',
-                action: {
-                    click: function(event,element){
-                        var bo=element.businessObject, inputtext;
-                        if(bo.resources){
-
-                            inputtext='Current Performer of the Task ('+ bo.id+') is "'+bo.resources[0].name+'".\r\n If you want to assign a new Performer fill out the form:';
-                        }
-                        else{
-                            inputtext='Assign a Performer to the Task ('+ bo.id+'):';
-                        }
-                        var result=window.prompt(inputtext);
-                        if(result){
-                            var resourceRole=elementFactory._bpmnFactory.create('bpmn:Performer',{name: result});
-                            modeling.updateProperties(element,{'resources':[resourceRole]});
-                        }
-                        console.log(element.result)
-                    }
-                }
-            }
-        });
-    }
-
-
 
     if (bpmnElement.$instanceOf('bpmn:FlowNode') ||
         bpmnElement.$instanceOf('bpmn:InteractionNode')) {
@@ -211,26 +181,54 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         });
     }
 
-// TODO: Enable PartnerRole
-    /*
-    function setPartnerRole(e,event){
-        var businessObject = element.businessObject;
-        var shape = elementFactory.createShape({ type: 'bpmn:PartnerRole','participantRef':businessObject });
-        create.start(event,shape);
+    if (bpmnElement.$instanceOf('bpmn:Task')) {
 
+        assign(actions, {
+            'resource':{
+                group: 'edit',
+                className: 'icon-flag',
+                title: 'Set Resource',
+                action: {
+                    click: function(event,element){
+                        var bo=element.businessObject, inputtext;
+                        if(bo.resources){
+
+                            inputtext='Current Performer of the Task ('+ bo.id+') is "'+bo.resources[0].name+'".\r\n If you want to assign a new Performer fill out the form:';
+                        }
+                        else{
+                            inputtext='Assign a Performer to the Task ('+ bo.id+'):';
+                        }
+                        //TODO provide a list for choosing
+                        var result=window.prompt(inputtext);
+                        if(result){
+                            var resourceRole=elementFactory._bpmnFactory.create('bpmn:Performer',{name: result});
+                            modeling.updateProperties(element,{'resources':[resourceRole]});
+                        }
+                    }
+                }
+            }
+        });
     }
 
+// TODO: Enable PartnerRole
+/*
     if(bpmnElement.$instanceOf('bpmn:Participant')){
 
         assign(actions, {
-            'settings': appendAction('bpmn:PartnerRole', 'icon-text-annotation',{'participantRef':element.businessObject })/*,
-            'settings': {
-                group: 'model',
-                className: 'icon-trash',
-                title: 'Set PartnerRole',
+            'partnerRole': {
+                group: 'edit',
+                className: 'icon-flag',
+                title: 'Mark as AppEnsemble',
                 action: {
-                    click: setPartnerRole,
-                    dragstart: setPartnerRole
+                    click: function(event,element){
+                        var bo=element.businessObject, inputtext;
+                        var result=window.confirm('Do you really like to mark the Participant ('+ bo.id+') as AppEnsemble?');
+                        if(result){
+                            var PartnerRole=elementFactory._bpmnFactory.create('bpmn:PartnerRole',{'name': "AppEnsemble"});
+                            var PartnerRoleShape=elementFactory.createShape({businessObject:PartnerRole});
+                            modeling.updateProperties(PartnerRole,{'participantRef':bo});
+                        }
+                    }
                 }
             }
         });
