@@ -98,5 +98,6 @@ a:link {
   background-image: url('../resources/flag.svg');
   background-repeat: no-repeat;
   background-position: right;
-  padding-left:.2em;
+  vertical-align: top ;
+  background-size: 80%;
 }
