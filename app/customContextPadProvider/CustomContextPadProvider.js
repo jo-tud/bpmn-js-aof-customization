@@ -162,7 +162,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         }
     }
 
-    if (!bpmnElement.$instanceOf('bpmn:Task')) {
+    if (bpmnElement.$instanceOf('bpmn:Task')) {
 
         assign(actions, {
             'resource':{
@@ -171,9 +171,17 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                 title: 'Set Resource',
                 action: {
                     click: function(event,element){
-                        var result=window.prompt('Resource role of '+element.name);
+                        var bo=element.businessObject, inputtext;
+                        if(bo.resources){
+
+                            inputtext='Current Performer of the Task ('+ bo.id+') is "'+bo.resources[0].name+'".\r\n If you want to assign a new Performer fill out the form:';
+                        }
+                        else{
+                            inputtext='Assign a Performer to the Task ('+ bo.id+'):';
+                        }
+                        var result=window.prompt(inputtext);
                         if(result){
-                            var resourceRole=elementFactory._bpmnFactory.create('bpmn:Performer',{name: result})
+                            var resourceRole=elementFactory._bpmnFactory.create('bpmn:Performer',{name: result});
                             modeling.updateProperties(element,{'resources':[resourceRole]});
                         }
                         console.log(element.result)
