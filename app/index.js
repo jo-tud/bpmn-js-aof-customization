@@ -24,14 +24,14 @@ var performerChooser=require('./performerChooser/PerformerChooser.js'); //affect
    bpmnReplace: [ 'type', CustomBpmnReplace ],
      contextPadProvider: [ 'type', CustomContextPadProvider ],
  };
-/*
+
 var extensionModule = {
-  __init__: [ 'PerformerChooser' ],
-  PerformerChooser: [ 'type', PerformerChooser ]
-};*/
+  __init__: [ 'performerChooser' ],
+  performerChooser: [ 'type', performerChooser ]
+};
 
 // Load the Modeler
-var renderer = new BpmnModeler({ container: canvas , additionalModules: [ overrideModule, performerChooser ]});
+var renderer = new BpmnModeler({ container: canvas , additionalModules: [ overrideModule, extensionModule ]});
 
 //var shape = elementFactory.createShape({ type: 'bpmn:PartnerRole','participantRef':businessObject });
 /*
