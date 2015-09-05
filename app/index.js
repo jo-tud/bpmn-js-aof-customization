@@ -16,20 +16,22 @@ var canvas = $('#js-canvas');
 // Reference to the custom Modules
 var CustomBpmnReplace=require('./customReplace/CustomReplace.js'); // affects activities
 var CustomContextPadProvider=require('./customContextPadProvider/CustomContextPadProvider.js'); //affects participants
+var PerformerChooser=require('./customContextPadProvider/CustomContextPadProvider.js'); //affects participants
 
 // Register the custom Modules
+/*
  var overrideModule = {
    bpmnReplace: [ 'type', CustomBpmnReplace ],
-     contextPadProvider: [ 'type', CustomContextPadProvider ]
- };
+     contextPadProvider: [ 'type', CustomContextPadProvider ],
+ };*/
 
 var extensionModule = {
-//  __init__: [ 'ParticipantAttribute' ],
-//  ParticipantAttribute: [ 'type', ParticipantAttribute ]
+  __init__: [ 'PerformerChooser' ],
+  PerformerChooser: [ 'type', PerformerChooser ]
 };
 
 // Load the Modeler
-var renderer = new BpmnModeler({ container: canvas , additionalModules: [ overrideModule ]});
+var renderer = new BpmnModeler({ container: canvas , additionalModules: [ overrideModule, PerformerChooser ]});
 
 //var shape = elementFactory.createShape({ type: 'bpmn:PartnerRole','participantRef':businessObject });
 /*
