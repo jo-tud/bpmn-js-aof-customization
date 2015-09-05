@@ -10,7 +10,7 @@ var assign = require('lodash/object/assign'),
  */
 function CustomContextPadProvider(contextPad, modeling, elementFactory,
                             connect, create, bpmnReplace,
-                            canvas) {
+                            canvas, performerChooser) {
 
     contextPad.registerProvider(this);
 
@@ -23,6 +23,7 @@ function CustomContextPadProvider(contextPad, modeling, elementFactory,
     this._create = create;
     this._bpmnReplace = bpmnReplace;
     this._canvas  = canvas;
+    this._performerChooser=performerChooser;
 }
 
 CustomContextPadProvider.$inject = [
@@ -32,7 +33,8 @@ CustomContextPadProvider.$inject = [
     'connect',
     'create',
     'bpmnReplace',
-    'canvas'
+    'canvas',
+    'performerChooser'
 ];
 
 CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
@@ -44,7 +46,8 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         connect = this._connect,
         create = this._create,
         bpmnReplace = this._bpmnReplace,
-        canvas = this._canvas;
+        canvas = this._canvas,
+        performerChooser=this._performerChooser;
 
     var actions = {};
 
@@ -190,6 +193,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                 title: 'Set Resource',
                 action: {
                     click: function(event,element){
+                        performerChooser.openChooser(getReplaceMenuPosition(element), element);
                         var bo=element.businessObject, inputtext;
                         if(bo.resources){
 
