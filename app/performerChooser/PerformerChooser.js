@@ -14,16 +14,24 @@ var forEach = require('lodash/collection/forEach'),
  * @param {PopupMenu} popupMenu
  * @param {Modeling} modeling
  * @param {ElementFactory} elementFactory
- * @param {Selection} selection
  */
-function PerformerChooser(popupMenu,modeling,elementFactory,selection) {
+function PerformerChooser(popupMenu,modeling,elementFactory) {
 
     /**
      *  Function which gets the single Option entries
      *  later via ajav request
-     *  TODO: Establish Ajax request
+     *  TODO: Establish Ajax request - success is not found correctly
      **/
     function getOptionEntities(){
+        var jquery=require('jquery')
+        var data,success;
+        /*jquery.ajax({
+            dataType: "json",
+            url: '../resources/sample.json',
+            data: "",
+            success: function(data,status){console.log(status);console.log(data);}
+        });*/
+
         var list=[
             {
                 label: 'Appname',
@@ -89,7 +97,6 @@ function PerformerChooser(popupMenu,modeling,elementFactory,selection) {
     function setPerformer(task, appUri) {
         var resource=elementFactory._bpmnFactory.create('bpmn:Performer',{name: appUri});
         modeling.updateProperties(task,{'resources':[resource]});
-        selection.select(task);
         task.popUp.close();
     }
 
@@ -105,6 +112,6 @@ function PerformerChooser(popupMenu,modeling,elementFactory,selection) {
 
 }
 
-PerformerChooser.$inject = ['popupMenu','modeling','elementFactory','selection'];
+PerformerChooser.$inject = ['popupMenu','modeling','elementFactory'];
 
 module.exports = PerformerChooser;
