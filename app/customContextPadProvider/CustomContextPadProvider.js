@@ -194,20 +194,6 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                 action: {
                     click: function(event,element){
                         performerChooser.openChooser(getReplaceMenuPosition(element), element);
-                        var bo=element.businessObject, inputtext;
-                        if(bo.resources){
-
-                            inputtext='Current Performer of the Task ('+ bo.id+') is "'+bo.resources[0].name+'".\r\n If you want to assign a new Performer fill out the form:';
-                        }
-                        else{
-                            inputtext='Assign a Performer to the Task ('+ bo.id+'):';
-                        }
-                        //TODO provide a list for choosing
-                        var result=window.prompt(inputtext);
-                        if(result){
-                            var resourceRole=elementFactory._bpmnFactory.create('bpmn:Performer',{name: result});
-                            modeling.updateProperties(element,{'resources':[resourceRole]});
-                        }
                     }
                 }
             }
