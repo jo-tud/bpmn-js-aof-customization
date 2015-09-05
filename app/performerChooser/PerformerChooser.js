@@ -14,8 +14,9 @@ var forEach = require('lodash/collection/forEach'),
  * @param {PopupMenu} popupMenu
  * @param {Modeling} modeling
  * @param {ElementFactory} elementFactory
+ * @param {Selection} selection
  */
-function PerformerChooser(popupMenu,modeling,elementFactory) {
+function PerformerChooser(popupMenu,modeling,elementFactory,selection) {
 
     /**
      *  Function which gets the single Option entries
@@ -88,7 +89,8 @@ function PerformerChooser(popupMenu,modeling,elementFactory) {
     function setPerformer(task, appUri) {
         var resource=elementFactory._bpmnFactory.create('bpmn:Performer',{name: appUri});
         modeling.updateProperties(task,{'resources':[resource]});
-
+        selection.select(task);
+        task.popUp.close();
     }
 
     /**
@@ -97,11 +99,12 @@ function PerformerChooser(popupMenu,modeling,elementFactory) {
     this.openChooser = function (position, element) {
         var entries = getOptions(element);
 
-        popupMenu.open('replace-menu', position, entries);
+        var popUp=popupMenu.open('replace-menu', position, entries);
+        element.popUp=popUp;
     }
 
 }
 
-PerformerChooser.$inject = ['popupMenu','modeling','elementFactory'];
+PerformerChooser.$inject = ['popupMenu','modeling','elementFactory','selection'];
 
 module.exports = PerformerChooser;
