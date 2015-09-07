@@ -1,14 +1,14 @@
 {"data":[
-  {
-    label: 'Appname',
-    actionName: 'set-performer',
-    className: 'App-icon',
-    uri: 'http://uri.zur.app'
-  },
-  {
-    label: 'Appname',
-    actionName: 'set-performer',
-    className: 'App-icon',
-    uri: 'http://uri.zur.app'
-  },
+{
+"label": "Appname",
+"actionName": "set-performer",
+"className": "App-icon",
+"uri": "http://uri.zur.app"
+},
+{
+"label": "Appname2",
+"actionName": "set-performer",
+"className": "App-icon",
+"uri": "http://uri.zur2.app"
+}
 ]}
