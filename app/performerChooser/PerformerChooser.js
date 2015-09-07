@@ -15,37 +15,42 @@ var forEach = require('lodash/collection/forEach'),
  * @param {Modeling} modeling
  * @param {ElementFactory} elementFactory
  */
-function PerformerChooser(popupMenu,modeling,elementFactory) {
+function PerformerChooser(popupMenu, modeling, elementFactory) {
 
     /**
      *  Function which gets the single Option entries
      *  later via ajav request
      *  TODO: Establish Ajax request - success is not found correctly
      **/
-    function getOptionEntities(){
-        var jquery=require('jquery')
-        var data,success;
-        /*jquery.ajax({
-            dataType: "json",
-            url: '../resources/sample.json',
-            data: "",
-            success: function(data,status){console.log(status);console.log(data);}
-        });*/
+    function getOptionEntities() {
+        var jquery = require('jquery')
+        var request_data = {};
 
-        var list=[
-            {
-                label: 'Appname',
-                actionName: 'set-performer',
-                className: 'App-icon',
-                uri: 'http://uri.zur.app'
-            }];
-        return list;
+        var seccessfkt =
+
+        var request = jquery.ajax('/bpmn-js-aof-customization/resources/sample.json', {
+            success: function (data, status, jqXHR) {
+                if (data.data) {
+                    request_data = data.data;
+                }
+            },
+            method: "GET",
+            dataType: 'json',
+            async: false,
+            timeout: 1000,
+            data: '',
+            error: function (jqXHR, status, error) {
+                alert(status);
+            }
+        });
+
+        return request_data;
     }
 
     /**
      *  Function for filtering the Performerlist
      **/
-    function filterPerformers(performerlist){
+    function filterPerformers(performerlist) {
         return performerlist;
     }
 
@@ -95,8 +100,8 @@ function PerformerChooser(popupMenu,modeling,elementFactory) {
      *  Action-handler whicht is called by clicking a menu-object. creates a new "bpmn:Performer" element and assigns it as resource to the Task
      **/
     function setPerformer(task, appUri) {
-        var resource=elementFactory._bpmnFactory.create('bpmn:Performer',{name: appUri});
-        modeling.updateProperties(task,{'resources':[resource]});
+        var resource = elementFactory._bpmnFactory.create('bpmn:Performer', {name: appUri});
+        modeling.updateProperties(task, {'resources': [resource]});
         task.popUp.close();
     }
 
@@ -106,12 +111,12 @@ function PerformerChooser(popupMenu,modeling,elementFactory) {
     this.openChooser = function (position, element) {
         var entries = getOptions(element);
 
-        var popUp=popupMenu.open('replace-menu', position, entries);
-        element.popUp=popUp;
+        var popUp = popupMenu.open('replace-menu', position, entries);
+        element.popUp = popUp;
     }
 
 }
 
-PerformerChooser.$inject = ['popupMenu','modeling','elementFactory'];
+PerformerChooser.$inject = ['popupMenu', 'modeling', 'elementFactory'];
 
 module.exports = PerformerChooser;
