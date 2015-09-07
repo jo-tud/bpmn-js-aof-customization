@@ -97,7 +97,7 @@ function PerformerChooser(popupMenu, modeling, elementFactory, elementRegistry) 
             else{
                 performeritem.className='performer-icon';
             }
-            performeritem.actionName="set-performer";
+            performeritem.actionName="set-performer-"+performeritem.label.toLowerCase().replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0').replace(/\s+/g,"_");
 
             return performeritem;
         }
