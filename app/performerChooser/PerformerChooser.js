@@ -19,8 +19,6 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
 
     /**
      *  Function which gets the single Option entries
-     *  later via ajav request
-     *  TODO: Establish Ajax request - success is not found correctly
      **/
     function getOptionEntities() {
         var jquery = require('jquery')
