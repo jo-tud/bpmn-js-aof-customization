@@ -52,7 +52,8 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
 
         // Adding a Menuentry for Manual creation of a Performer
         var manualOption=[{label: 'Enter other Performer',uri: ''}];
-        addEntries(manualOption,function(data){return data;},setManualPerformer)
+        addEntries(manualOption,function(data){return data;},setManualPerformer);
+
 
         /**
          *  Function used by the getOptions-function for filtering the entry and making objects out of the list
@@ -76,11 +77,9 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
             return {
                 label: definition.label,
                 className: definition.className,
-                action: {
-                    name: "set-performer-"+definition.label.toLowerCase().replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0').replace(/\s+/g,"_"),
-                    handler: function () {
+                id: "set-performer-"+definition.label.toLowerCase().replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0').replace(/\s+/g,"_"),
+                action: function () {
                         actionHandler(element, definition.uri);
-                    }
                 }
             };
         }
@@ -119,7 +118,9 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
     function setManualPerformer(task){
         var result=window.prompt('What is the URI of the custom Performer?');
         var pattern=new RegExp("(http|ftp|https)://[\w-]+(\.[\w-]*)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?");
-        if(!pattern.test(result)) {
+        if(result==null) {
+            task.popUp.close();
+        }else if(!pattern.test(result)){
             setManualPerformer(task);
         } else {
             setPerformer(task,result);
@@ -130,9 +131,15 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
      *  Function called for openin the popUp-Menu
      **/
     this.openChooser = function (position, element) {
-        var entries = getOptions(element);
+        var entries = getOptions(element),headerEntries = [];
 
-        var popUp = popupMenu.open('replace-menu', position, entries);
+        var popUp = popupMenu.open({
+            className: 'replace-menu',
+            element: element,
+            position: position,
+            headerEntries: headerEntries,
+            entries: entries
+        });
         element.popUp = popUp;
     }
 

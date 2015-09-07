@@ -1,7 +1,9 @@
 'use strict';
 
 var  forEach = require('lodash/collection/forEach'),
-    filter = require('lodash/collection/filter');
+    filter = require('lodash/collection/filter'),
+    pick = require('lodash/object/pick'),
+    assign = require('lodash/object/assign');
 
 var REPLACE_OPTIONS = require ('./ReplaceOptions');
 
@@ -9,7 +11,20 @@ var startEventReplace =  REPLACE_OPTIONS.START_EVENT,
     intermediateEventReplace =  REPLACE_OPTIONS.INTERMEDIATE_EVENT,
     endEventReplace =  REPLACE_OPTIONS.END_EVENT,
     gatewayReplace =  REPLACE_OPTIONS.GATEWAY,
-    taskReplace =  REPLACE_OPTIONS.TASK;
+    taskReplace =  REPLACE_OPTIONS.TASK,
+    subProcessExpandedReplace = REPLACE_OPTIONS.SUBPROCESS_EXPANDED,
+    transactionReplace = REPLACE_OPTIONS.TRANSACTION,
+    boundaryEventReplace =  REPLACE_OPTIONS.BOUNDARY_EVENT;
+
+var is = require('./ModelUtil').is,
+    getBusinessObject = require('./ModelUtil').getBusinessObject,
+    isExpanded = require('./DiUtil').isExpanded;
+
+var CUSTOM_PROPERTIES = [
+  'cancelActivity',
+  'instantiate',
+  'eventGatewayType'
+];
 
 
 /**
@@ -21,8 +36,12 @@ var startEventReplace =  REPLACE_OPTIONS.START_EVENT,
  * @param {PopupMenu} popupMenu
  * @param {Replace} replace
  */
-function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection) {
-    console.log("custom loaded");
+function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection, modeling, eventBus) {
+
+  var self = this,
+      currentElement;
+
+
     /**
      * Prepares a new business object for the replacement element
      * and triggers the replace operation.
@@ -51,16 +70,13 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection) {
             eventDefinitions.push(eventDefinition);
         }
 
-        if (target.instantiate !== undefined) {
-            businessObject.instantiate = target.instantiate;
-        }
+    // initialize special properties defined in target definition
 
-        if (target.eventGatewayType !== undefined) {
-            businessObject.eventGatewayType = target.eventGatewayType;
-        }
+    assign(businessObject, pick(target, CUSTOM_PROPERTIES));
+
 
         // copy size (for activities only)
-        if (oldBusinessObject.$instanceOf('bpmn:Activity')) {
+    if (is(oldBusinessObject, 'bpmn:Activity')) {
 
             // TODO: need also to respect min/max Size
 
@@ -68,8 +84,14 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection) {
             newElement.height = element.height;
         }
 
+
+    if (is(oldBusinessObject, 'bpmn:SubProcess')) {
+      newElement.isExpanded = isExpanded(oldBusinessObject);
+    }
+
         // TODO: copy other elligable properties from old business object
         businessObject.name = oldBusinessObject.name;
+    businessObject.loopCharacteristics = oldBusinessObject.loopCharacteristics;
 
         newElement = replace.replaceElement(element, newElement);
 
@@ -79,49 +101,175 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection) {
     }
 
 
+  function toggleLoopEntry(event, entry) {
+    var loopEntries = self.getLoopEntries(currentElement);
+
+    var loopCharacteristics;
+
+    if (entry.active) {
+      loopCharacteristics = undefined;
+    } else {
+      forEach(loopEntries, function(action) {
+        var options = action.options;
+
+        if (entry.id === action.id) {
+          loopCharacteristics = moddle.create(options.loopCharacteristics);
+
+          if (options.isSequential) {
+            loopCharacteristics.isSequential = options.isSequential;
+          }
+        }
+      });
+    }
+    modeling.updateProperties(currentElement, { loopCharacteristics: loopCharacteristics });
+  }
+
+
+  function getLoopEntries(element) {
+
+    currentElement = element;
+
+    var businessObject = getBusinessObject(element),
+        loopCharacteristics = businessObject.loopCharacteristics;
+
+    var isSequential,
+        isLoop,
+        isParallel;
+
+    if (loopCharacteristics) {
+      isSequential = loopCharacteristics.isSequential;
+      isLoop = loopCharacteristics.isSequential === undefined;
+      isParallel = loopCharacteristics.isSequential !== undefined && !loopCharacteristics.isSequential;
+    }
+
+    var loopEntries = [
+      {
+        id: 'toggle-parallel-mi',
+        className: 'icon-parallel-mi-marker',
+        active: isParallel,
+        action: toggleLoopEntry,
+        options: {
+          loopCharacteristics: 'bpmn:MultiInstanceLoopCharacteristics',
+          isSequential: false
+        }
+      },
+      {
+        id: 'toggle-sequential-mi',
+        className: 'icon-sequential-mi-marker',
+        active: isSequential,
+        action: toggleLoopEntry,
+        options: {
+          loopCharacteristics: 'bpmn:MultiInstanceLoopCharacteristics',
+          isSequential: true
+        }
+      },
+      {
+        id: 'toggle-loop',
+        className: 'icon-loop-marker',
+        active: isLoop,
+        action: toggleLoopEntry,
+        options: {
+          loopCharacteristics: 'bpmn:StandardLoopCharacteristics'
+        }
+      }
+    ];
+    return loopEntries;
+  }
+
+
+  function getAdHocEntry(element) {
+    var businessObject = getBusinessObject(element);
+
+    var isAdHoc = is(businessObject, 'bpmn:AdHocSubProcess');
+
+    var adHocEntry = {
+      id: 'toggle-adhoc',
+      className: 'icon-ad-hoc-marker',
+      active: isAdHoc,
+      action: function(event, entry) {
+        if (isAdHoc) {
+          return replaceElement(element, { type: 'bpmn:SubProcess' });
+        } else {
+          return replaceElement(element, { type: 'bpmn:AdHocSubProcess' });
+        }
+      }
+    };
+
+    return adHocEntry;
+  }
+
+
     function getReplaceOptions(element) {
 
         var menuEntries = [];
         var businessObject = element.businessObject;
 
-        if (businessObject.$instanceOf('bpmn:StartEvent')) {
+    if (is(businessObject, 'bpmn:StartEvent')) {
             addEntries(startEventReplace, filterEvents);
         } else
 
-        if (businessObject.$instanceOf('bpmn:IntermediateCatchEvent') ||
-            businessObject.$instanceOf('bpmn:IntermediateThrowEvent')) {
+    if (is(businessObject, 'bpmn:IntermediateCatchEvent') ||
+        is(businessObject, 'bpmn:IntermediateThrowEvent')) {
 
             addEntries(intermediateEventReplace, filterEvents);
         } else
 
-        if (businessObject.$instanceOf('bpmn:EndEvent')) {
+    if (is(businessObject, 'bpmn:EndEvent')) {
 
             addEntries(endEventReplace, filterEvents);
         } else
 
-        if (businessObject.$instanceOf('bpmn:Gateway')) {
+    if (is(businessObject, 'bpmn:Gateway')) {
 
             addEntries(gatewayReplace, function(entry) {
 
                 return entry.target.type  !== businessObject.$type;
             });
         } else
-// Added to filter task types
-        if (businessObject.$instanceOf('bpmn:FlowNode')) {
-            addEntries(taskReplace, filterFlowNodes)
+
+    if (is(businessObject, 'bpmn:Transaction')) {
+
+      addEntries(transactionReplace, filterEvents);
+    } else
+
+    if (is(businessObject, 'bpmn:SubProcess') && isExpanded(businessObject)) {
+
+      addEntries(subProcessExpandedReplace, filterEvents);
+    } else
+
+    if (is(businessObject, 'bpmn:AdHocSubProcess') && !isExpanded(businessObject)) {
+
+      addEntries(taskReplace, function(entry) {
+        return entry.target.type !== 'bpmn:SubProcess';
+      });
+    } else
+
+    if (is(businessObject, 'bpmn:BoundaryEvent')) {
+      addEntries(boundaryEventReplace, filterEvents);
+    } else
+
+    if (is(businessObject, 'bpmn:FlowNode')) {
+      addEntries(taskReplace,filterFlowNodes);
         }
 
         function filterEvents(entry) {
 
             var target = entry.target;
 
-            var eventDefinition = businessObject.eventDefinitions && businessObject.eventDefinitions[0].$type;
-            var isEventDefinitionEqual = target.eventDefinition == eventDefinition;
-            var isEventTypeEqual =  businessObject.$type == target.type;
+      var eventDefinition = businessObject.eventDefinitions && businessObject.eventDefinitions[0].$type,
+          cancelActivity;
+
+      if (businessObject.$type === 'bpmn:BoundaryEvent') {
+        cancelActivity = target.cancelActivity !== false;
+      }
+
+      var isEventDefinitionEqual = target.eventDefinition == eventDefinition,
+          isEventTypeEqual = businessObject.$type == target.type,
+          isInterruptingEqual = businessObject.cancelActivity == cancelActivity;
 
             return ((!isEventDefinitionEqual && isEventTypeEqual) ||
                 !isEventTypeEqual) ||
-                !(isEventDefinitionEqual && isEventTypeEqual);
+              !(isEventDefinitionEqual && isEventTypeEqual && isInterruptingEqual);
         }
 // Added to filter task types
         function filterFlowNodes(entry){
@@ -153,11 +301,9 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection) {
             return {
                 label: definition.label,
                 className: definition.className,
-                action: {
-                    name: definition.actionName,
-                    handler: function() {
-                        replaceElement(element, definition.target);
-                    }
+        id: definition.actionName,
+        action: function() {
+          return replaceElement(element, definition.target);
                 }
             };
         }
@@ -165,20 +311,41 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection) {
         return menuEntries;
     }
 
-
-    // API
-
+  /**
+   * [function description]
+   * @param  {Object} position
+   * @param  {Object} element
+   */
     this.openChooser = function(position, element) {
-        var entries = this.getReplaceOptions(element);
+    var entries = this.getReplaceOptions(element),
+        headerEntries = [];
 
-        popupMenu.open('replace-menu', position, entries);
+    if (is(element, 'bpmn:Activity')) {
+      headerEntries = headerEntries.concat(this.getLoopEntries(element));
+    }
+
+    if (is(element, 'bpmn:SubProcess') && !is(element, 'bpmn:Transaction')) {
+      headerEntries.push(this.getAdHocEntry(element));
+    }
+
+    popupMenu.open({
+      className: 'replace-menu',
+      element: element,
+      position: position,
+      headerEntries: headerEntries,
+      entries: entries
+    });
     };
 
     this.getReplaceOptions = getReplaceOptions;
 
+  this.getLoopEntries = getLoopEntries;
+
+  this.getAdHocEntry = getAdHocEntry;
+
     this.replaceElement = replaceElement;
 }
 
-CustomBpmnReplace.$inject = [ 'bpmnFactory', 'moddle', 'popupMenu', 'replace', 'selection' ];
+CustomBpmnReplace.$inject = [ 'bpmnFactory', 'moddle', 'popupMenu', 'replace', 'selection', 'modeling', 'eventBus' ];
 
 module.exports = CustomBpmnReplace;

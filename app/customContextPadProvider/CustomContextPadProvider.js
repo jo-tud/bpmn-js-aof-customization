@@ -2,7 +2,8 @@
 
 
 var assign = require('lodash/object/assign'),
-    forEach = require('lodash/collection/forEach');
+    forEach = require('lodash/collection/forEach'),
+    is = require('./ModelUtil').is;
 
 
 /**
@@ -112,10 +113,10 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         };
     }
 
-    if (bpmnElement.$instanceOf('bpmn:FlowNode')) {
+  if (is(bpmnElement, 'bpmn:FlowNode')) {
 
-        if (!bpmnElement.$instanceOf('bpmn:EndEvent') &&
-            !bpmnElement.$instanceOf('bpmn:EventBasedGateway') &&
+    if (!is(bpmnElement, 'bpmn:EndEvent') &&
+        !is(bpmnElement, 'bpmn:EventBasedGateway') &&
             !isEventType(bpmnElement, 'bpmn:IntermediateThrowEvent', 'bpmn:LinkEventDefinition')) {
 
             assign(actions, {
@@ -127,7 +128,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
             });
         }
 
-        if (bpmnElement.$instanceOf('bpmn:EventBasedGateway')) {
+    if (is(bpmnElement, 'bpmn:EventBasedGateway')) {
 
             assign(actions, {
                 'append.receive-task': appendAction('bpmn:ReceiveTask', 'icon-receive-task'),
@@ -148,8 +149,6 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
 
 
         // Replace menu entry
-        if (!bpmnElement.$instanceOf('bpmn:SubProcess')) {
-
             assign(actions, {
                 'replace': {
                     group: 'edit',
@@ -163,11 +162,9 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                 }
             });
         }
-    }
 
-
-    if (bpmnElement.$instanceOf('bpmn:FlowNode') ||
-        bpmnElement.$instanceOf('bpmn:InteractionNode')) {
+  if (is(bpmnElement, 'bpmn:FlowNode') ||
+      is(bpmnElement, 'bpmn:InteractionNode')) {
 
         assign(actions, {
             'append.text-annotation': appendAction('bpmn:TextAnnotation', 'icon-text-annotation'),
@@ -184,7 +181,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         });
     }
 
-    if (bpmnElement.$instanceOf('bpmn:Task')) {
+    if (is(bpmnElement, 'bpmn:Task')) {
 
         assign(actions, {
             'resource':{
