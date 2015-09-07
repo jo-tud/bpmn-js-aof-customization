@@ -8,15 +8,11 @@ var forEach = require('lodash/collection/forEach'),
     filter = require('lodash/collection/filter');
 
 /**
- *
- *
- *
  * @param {PopupMenu} popupMenu
  * @param {Modeling} modeling
  * @param {ElementFactory} elementFactory
- * @param {ElementRegistry} elementRegistry
  */
-function PerformerChooser(popupMenu, modeling, elementFactory, elementRegistry) {
+function PerformerChooser(popupMenu, modeling, elementFactory) {
 
     /**
      *  Function which gets the single Option entries
@@ -52,18 +48,22 @@ function PerformerChooser(popupMenu, modeling, elementFactory, elementRegistry) 
     function getOptions(element) {
 
         var menuEntries = [];
-        addEntries(getOptionEntities(), filterPerformers);
+        addEntries(getOptionEntities(), markCurrentPerformer, setPerformer);
+
+        // Adding a Menuentry for Manual creation of a Performer
+        var manualOption=[{label: 'Enter other Performer',uri: ''}];
+        addEntries(manualOption,function(data){return data;},setManualPerformer)
 
         /**
          *  Function used by the getOptions-function for filtering the entry and making objects out of the list
          **/
-        function addEntries(entries, filterFun) {
+        function addEntries(entries, filterFun,actionHandler) {
             // Filter selected type from the array
             var filteredEntries = filter(entries, filterFun);
 
             // Add entries to replace menu
             forEach(filteredEntries, function (definition) {
-                var entry = addMenuEntry(definition);
+                var entry = addMenuEntry(definition,actionHandler);
                 menuEntries.push(entry);
             });
         }
@@ -71,15 +71,15 @@ function PerformerChooser(popupMenu, modeling, elementFactory, elementRegistry) 
         /**
          *  Function used by the addEntries-function for providing the needed object-structure and to set the action-handler
          **/
-        function addMenuEntry(definition) {
+        function addMenuEntry(definition,actionHandler) {
 
             return {
                 label: definition.label,
                 className: definition.className,
                 action: {
-                    name: definition.actionName,
+                    name: "set-performer-"+definition.label.toLowerCase().replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0').replace(/\s+/g,"_"),
                     handler: function () {
-                        setPerformer(element, definition.uri);
+                        actionHandler(element, definition.uri);
                     }
                 }
             };
@@ -87,9 +87,9 @@ function PerformerChooser(popupMenu, modeling, elementFactory, elementRegistry) 
 
         /**
          *  Function for filtering the Performerlist
-         *  TODO: Make possibility to add Performer manually
+         *  TODO Make filter recognize that a manual Performer is set and add it to the menu
          **/
-        function filterPerformers(performeritem) {
+        function markCurrentPerformer(performeritem) {
 
             if(element.businessObject.hasOwnProperty('resources') && element.businessObject.resources[0]!== null && element.businessObject.resources[0].name==performeritem.uri){
                 performeritem.className='performer-icon-active';
@@ -97,7 +97,6 @@ function PerformerChooser(popupMenu, modeling, elementFactory, elementRegistry) 
             else{
                 performeritem.className='performer-icon';
             }
-            performeritem.actionName="set-performer-"+performeritem.label.toLowerCase().replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0').replace(/\s+/g,"_");
 
             return performeritem;
         }
@@ -106,12 +105,25 @@ function PerformerChooser(popupMenu, modeling, elementFactory, elementRegistry) 
     }
 
     /**
-     *  Action-handler whicht is called by clicking a menu-object. creates a new "bpmn:Performer" element and assigns it as resource to the Task
+     *  Action-handler which is called by clicking a menu-object. creates a new "bpmn:Performer" element and assigns it as resource to the Task
      **/
     function setPerformer(task, appUri) {
         var resource = elementFactory._bpmnFactory.create('bpmn:Performer', {name: appUri});
         modeling.updateProperties(task, {'resources': [resource]});
         task.popUp.close();
+    }
+
+    /**
+     *  Action-handler which is called when a custom Performer is to be assigned.
+     **/
+    function setManualPerformer(task){
+        var result=window.prompt('What is the URI of the custom Performer?');
+        var pattern=new RegExp("(http|ftp|https)://[\w-]+(\.[\w-]*)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?");
+        if(!pattern.test(result)) {
+            setManualPerformer(task);
+        } else {
+            setPerformer(task,result);
+        }
     }
 
     /**
