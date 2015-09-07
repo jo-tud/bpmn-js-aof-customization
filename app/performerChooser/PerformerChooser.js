@@ -14,17 +14,17 @@ var forEach = require('lodash/collection/forEach'),
  * @param {PopupMenu} popupMenu
  * @param {Modeling} modeling
  * @param {ElementFactory} elementFactory
+ * @param {ElementRegistry} elementRegistry
  */
-function PerformerChooser(popupMenu, modeling, elementFactory) {
+function PerformerChooser(popupMenu, modeling, elementFactory, elementRegistry) {
 
     /**
      *  Function which gets the single Option entries
+     *  TODO: move Ajaxrequest to module-initialization and do it asynchroiosly
      **/
     function getOptionEntities() {
         var jquery = require('jquery')
         var request_data = {};
-
-        var seccessfkt =
 
         var request = jquery.ajax('/bpmn-js-aof-customization/resources/sample.json', {
             success: function (data, status, jqXHR) {
@@ -45,12 +45,6 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
         return request_data;
     }
 
-    /**
-     *  Function for filtering the Performerlist
-     **/
-    function filterPerformers(performerlist) {
-        return performerlist;
-    }
 
     /**
      *  Function which provides the Options-Object for the popup-menu
@@ -91,6 +85,23 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
             };
         }
 
+        /**
+         *  Function for filtering the Performerlist
+         *  TODO: Make possibility to add Performer manually
+         **/
+        function filterPerformers(performeritem) {
+
+            if(element.businessObject.hasOwnProperty('resources') && element.businessObject.resources[0]!== null && element.businessObject.resources[0].name==performeritem.uri){
+                performeritem.className='performer-icon-active';
+            }
+            else{
+                performeritem.className='performer-icon';
+            }
+            performeritem.actionName="set-performer";
+
+            return performeritem;
+        }
+
         return menuEntries;
     }
 
@@ -115,6 +126,6 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
 
 }
 
-PerformerChooser.$inject = ['popupMenu', 'modeling', 'elementFactory'];
+PerformerChooser.$inject = ['popupMenu', 'modeling', 'elementFactory','elementRegistry'];
 
 module.exports = PerformerChooser;
