@@ -95,7 +95,7 @@ a:link {
   opacity: 1.0;
 }
 .icon-flag{
-  background-image: url('../resources/flag.svg');
+  background-image: url('../resources/App.svg');
   background-repeat: no-repeat;
   background-position: right;
   vertical-align: top ;
