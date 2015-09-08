@@ -2,7 +2,8 @@
 
 
 var assign = require('lodash/object/assign'),
-    forEach = require('lodash/collection/forEach');
+    forEach = require('lodash/collection/forEach'),
+    is = require('./ModelUtil').is;
 
 
 /**
@@ -10,7 +11,7 @@ var assign = require('lodash/object/assign'),
  */
 function CustomContextPadProvider(contextPad, modeling, elementFactory,
                             connect, create, bpmnReplace,
-                            canvas) {
+                            canvas, performerChooser) {
 
     contextPad.registerProvider(this);
 
@@ -23,6 +24,7 @@ function CustomContextPadProvider(contextPad, modeling, elementFactory,
     this._create = create;
     this._bpmnReplace = bpmnReplace;
     this._canvas  = canvas;
+    this._performerChooser=performerChooser;
 }
 
 CustomContextPadProvider.$inject = [
@@ -32,7 +34,8 @@ CustomContextPadProvider.$inject = [
     'connect',
     'create',
     'bpmnReplace',
-    'canvas'
+    'canvas',
+    'performerChooser'
 ];
 
 CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
@@ -44,7 +47,8 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         connect = this._connect,
         create = this._create,
         bpmnReplace = this._bpmnReplace,
-        canvas = this._canvas;
+        canvas = this._canvas,
+        performerChooser=this._performerChooser;
 
     var actions = {};
 
@@ -109,10 +113,10 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         };
     }
 
-    if (bpmnElement.$instanceOf('bpmn:FlowNode')) {
+  if (is(bpmnElement, 'bpmn:FlowNode')) {
 
-        if (!bpmnElement.$instanceOf('bpmn:EndEvent') &&
-            !bpmnElement.$instanceOf('bpmn:EventBasedGateway') &&
+    if (!is(bpmnElement, 'bpmn:EndEvent') &&
+        !is(bpmnElement, 'bpmn:EventBasedGateway') &&
             !isEventType(bpmnElement, 'bpmn:IntermediateThrowEvent', 'bpmn:LinkEventDefinition')) {
 
             assign(actions, {
@@ -124,7 +128,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
             });
         }
 
-        if (bpmnElement.$instanceOf('bpmn:EventBasedGateway')) {
+    if (is(bpmnElement, 'bpmn:EventBasedGateway')) {
 
             assign(actions, {
                 'append.receive-task': appendAction('bpmn:ReceiveTask', 'icon-receive-task'),
@@ -145,8 +149,6 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
 
 
         // Replace menu entry
-        if (!bpmnElement.$instanceOf('bpmn:SubProcess')) {
-
             assign(actions, {
                 'replace': {
                     group: 'edit',
@@ -160,11 +162,9 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                 }
             });
         }
-    }
 
-
-    if (bpmnElement.$instanceOf('bpmn:FlowNode') ||
-        bpmnElement.$instanceOf('bpmn:InteractionNode')) {
+  if (is(bpmnElement, 'bpmn:FlowNode') ||
+      is(bpmnElement, 'bpmn:InteractionNode')) {
 
         assign(actions, {
             'append.text-annotation': appendAction('bpmn:TextAnnotation', 'icon-text-annotation'),
@@ -181,7 +181,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         });
     }
 
-    if (bpmnElement.$instanceOf('bpmn:Task')) {
+    if (is(bpmnElement, 'bpmn:Task')) {
 
         assign(actions, {
             'resource':{
@@ -190,20 +190,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                 title: 'Set Resource',
                 action: {
                     click: function(event,element){
-                        var bo=element.businessObject, inputtext;
-                        if(bo.resources){
-
-                            inputtext='Current Performer of the Task ('+ bo.id+') is "'+bo.resources[0].name+'".\r\n If you want to assign a new Performer fill out the form:';
-                        }
-                        else{
-                            inputtext='Assign a Performer to the Task ('+ bo.id+'):';
-                        }
-                        //TODO provide a list for choosing
-                        var result=window.prompt(inputtext);
-                        if(result){
-                            var resourceRole=elementFactory._bpmnFactory.create('bpmn:Performer',{name: result});
-                            modeling.updateProperties(element,{'resources':[resourceRole]});
-                        }
+                        performerChooser.openChooser(getReplaceMenuPosition(element), element);
                     }
                 }
             }

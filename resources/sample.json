@@ -1,0 +1,10 @@
+{"data":[
+{
+"label": "Appname",
+"uri": "http://uri.zur.app"
+},
+{
+"label": "Appname ' abc !$%&/(?=)2",
+"uri": "http://uri.zur2.app"
+}
+]}

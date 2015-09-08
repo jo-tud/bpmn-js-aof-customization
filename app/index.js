@@ -16,34 +16,26 @@ var canvas = $('#js-canvas');
 // Reference to the custom Modules
 var CustomBpmnReplace=require('./customReplace/CustomReplace.js'); // affects activities
 var CustomContextPadProvider=require('./customContextPadProvider/CustomContextPadProvider.js'); //affects participants
+var performerChooser=require('./performerChooser/PerformerChooser.js'); //affects participants
+var ExtendedBpmnRenderer=require('./aof-customization/ExtendedBpmnRenderer.js');
+var ExtendedPathMap=require('./aof-customization/ExtendedPathMap.js'); // affects activities
 
 // Register the custom Modules
+
  var overrideModule = {
+   renderer:['type',ExtendedBpmnRenderer],
+   pathMap:['type',ExtendedPathMap],
    bpmnReplace: [ 'type', CustomBpmnReplace ],
-     contextPadProvider: [ 'type', CustomContextPadProvider ]
+   contextPadProvider: [ 'type', CustomContextPadProvider ]
  };
 
 var extensionModule = {
-//  __init__: [ 'ParticipantAttribute' ],
-//  ParticipantAttribute: [ 'type', ParticipantAttribute ]
+  __init__: [ 'performerChooser'],
+  performerChooser: [ 'type', performerChooser ]
 };
 
 // Load the Modeler
-var renderer = new BpmnModeler({ container: canvas , additionalModules: [ overrideModule ]});
-
-//var shape = elementFactory.createShape({ type: 'bpmn:PartnerRole','participantRef':businessObject });
-/*
-renderer.on('element.click',function(event){
-  var businessObject=event.element.businessObject;
-  if(!businessObject.resources){
-      var Modeling=require('bpmn-js/lib/features/modeling/modeling');
-      Modeling.updateProperties(businessObject,{'resources':'http://'});
-
-  }
-  console.log(event);
-});*/
-//var a=renderer.get('moddle');
-//a.create('bpmn:PartnerRole');
+var renderer = new BpmnModeler({ container: canvas , additionalModules: [ overrideModule, extensionModule ]});
 
 var newDiagramXML = fs.readFileSync(__dirname + '/../resources/newDiagram.bpmn', 'utf-8');
 
