@@ -18,13 +18,15 @@ var CustomBpmnReplace=require('./customReplace/CustomReplace.js'); // affects ac
 var CustomContextPadProvider=require('./customContextPadProvider/CustomContextPadProvider.js'); //affects participants
 var performerChooser=require('./performerChooser/PerformerChooser.js'); //affects participants
 var ExtendedBpmnRenderer=require('./aof-customization/ExtendedBpmnRenderer.js');
+var ExtendedPathMap=require('./aof-customization/ExtendedPathMap.js'); // affects activities
 
 // Register the custom Modules
 
  var overrideModule = {
    renderer:['type',ExtendedBpmnRenderer],
+   pathMap:['type',ExtendedPathMap],
    bpmnReplace: [ 'type', CustomBpmnReplace ],
-     contextPadProvider: [ 'type', CustomContextPadProvider ]
+   contextPadProvider: [ 'type', CustomContextPadProvider ]
  };
 
 var extensionModule = {
