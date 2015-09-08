@@ -3,7 +3,7 @@
 
 var assign = require('lodash/object/assign'),
     forEach = require('lodash/collection/forEach'),
-    is = require('./ModelUtil').is;
+    is = require('./../util/ModelUtil').is;
 
 
 /**

@@ -20,7 +20,7 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
      *  TODO: Make Task not forget Resource when changing Type
      **/
     function getOptionEntities() {
-        var jquery = require('jquery')
+        var jquery = require('jquery');
         var request_data = {};
 
         var request = jquery.ajax('/bpmn-js-aof-customization/resources/sample.json', {

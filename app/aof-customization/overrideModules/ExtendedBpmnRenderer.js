@@ -11,7 +11,7 @@ var inherits = require('inherits'),
 
 var DefaultRenderer = require('diagram-js/lib/draw/Renderer'),
     TextUtil = require('diagram-js/lib/util/Text'),
-    DiUtil = require('./util/DiUtil');
+    DiUtil = require('./../util/DiUtil');
 
 var createLine = DefaultRenderer.createLine;
 

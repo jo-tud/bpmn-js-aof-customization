@@ -14,28 +14,10 @@ var container = $('#js-drop-zone');
 var canvas = $('#js-canvas');
 
 // Reference to the custom Modules
-var CustomBpmnReplace=require('./customReplace/CustomReplace.js'); // affects activities
-var CustomContextPadProvider=require('./customContextPadProvider/CustomContextPadProvider.js'); //affects participants
-var performerChooser=require('./performerChooser/PerformerChooser.js'); //affects participants
-var ExtendedBpmnRenderer=require('./aof-customization/ExtendedBpmnRenderer.js');
-var ExtendedPathMap=require('./aof-customization/ExtendedPathMap.js'); // affects activities
-
-// Register the custom Modules
-
- var overrideModule = {
-   renderer:['type',ExtendedBpmnRenderer],
-   pathMap:['type',ExtendedPathMap],
-   bpmnReplace: [ 'type', CustomBpmnReplace ],
-   contextPadProvider: [ 'type', CustomContextPadProvider ]
- };
-
-var extensionModule = {
-  __init__: [ 'performerChooser'],
-  performerChooser: [ 'type', performerChooser ]
-};
+var AofCustomizationModules=require('./aof-customization'); // affects activities
 
 // Load the Modeler
-var renderer = new BpmnModeler({ container: canvas , additionalModules: [ overrideModule, extensionModule ]});
+var renderer = new BpmnModeler({ container: canvas , additionalModules: [AofCustomizationModules]});
 
 var newDiagramXML = fs.readFileSync(__dirname + '/../resources/newDiagram.bpmn', 'utf-8');
 

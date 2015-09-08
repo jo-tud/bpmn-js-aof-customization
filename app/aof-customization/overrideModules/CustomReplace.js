@@ -16,9 +16,9 @@ var startEventReplace =  REPLACE_OPTIONS.START_EVENT,
     transactionReplace = REPLACE_OPTIONS.TRANSACTION,
     boundaryEventReplace =  REPLACE_OPTIONS.BOUNDARY_EVENT;
 
-var is = require('./ModelUtil').is,
-    getBusinessObject = require('./ModelUtil').getBusinessObject,
-    isExpanded = require('./DiUtil').isExpanded;
+var is = require('./../util/ModelUtil').is,
+    getBusinessObject = require('./../util/ModelUtil').getBusinessObject,
+    isExpanded = require('./../util/DiUtil').isExpanded;
 
 var CUSTOM_PROPERTIES = [
   'cancelActivity',
