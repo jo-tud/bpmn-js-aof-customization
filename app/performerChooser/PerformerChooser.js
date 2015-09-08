@@ -17,6 +17,7 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
     /**
      *  Function which gets the single Option entries
      *  TODO: move Ajaxrequest to module-initialization and do it asynchroiosly
+     *  TODO: Make Task not forget Resource when changing Type
      **/
     function getOptionEntities() {
         var jquery = require('jquery')
