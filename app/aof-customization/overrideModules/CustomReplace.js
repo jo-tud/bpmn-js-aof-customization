@@ -93,14 +93,12 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection, m
         var newProps=moddle.getElementDescriptor(businessObject).propertiesByName;
         forEach(oldProps, function(prop,key){
             if(oldBusinessObject.hasOwnProperty(key) && newProps.hasOwnProperty(key)){
-                if(['id','name','loopCharacteristics'].indexOf(key)==-1){
+                if(['id'].indexOf(key)==-1){
                     businessObject[key]=oldBusinessObject[key];
                 }
             }
 
         });
-        businessObject.name = oldBusinessObject.name;
-        businessObject.loopCharacteristics = oldBusinessObject.loopCharacteristics;
 
         newElement = replace.replaceElement(element, newElement);
 
