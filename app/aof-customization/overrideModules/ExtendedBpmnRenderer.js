@@ -1421,6 +1421,11 @@ function ExtendedBpmnRenderer(events, styles, pathMap) {
             renderer(marker)(p, element, position);
         });
 
+        if (obj.resources && obj.resources.length>0) {
+            renderer('ResourcesMarker')(p, element, position);
+        }
+        // Place non-loop Markers above because the LoopMarker returns
+
         if (obj.$type === 'bpmn:AdHocSubProcess') {
             renderer('AdhocMarker')(p, element, position);
         }
@@ -1439,9 +1444,7 @@ function ExtendedBpmnRenderer(events, styles, pathMap) {
         if (!!obj.isForCompensation) {
             renderer('CompensationMarker')(p, element, position);
         }
-        if (obj.resources && obj.resources.length>0) {
-            renderer('ResourcesMarker')(p, element, position);
-        }
+
     }
 
     function drawShape(parent, element) {
