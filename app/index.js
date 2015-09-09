@@ -2,7 +2,7 @@
 
 
 // replace ende
-var assign = require('lodash/object/assign')
+var assign = require('lodash/object/assign');
 
 var fs = require('fs');
 
@@ -14,30 +14,10 @@ var container = $('#js-drop-zone');
 var canvas = $('#js-canvas');
 
 // Reference to the custom Modules
-var CustomBpmnReplace=require('./customReplace/CustomReplace.js'); // affects activities
-//var CustomContextPadProvider=require('./customContextPadProvider/CustomContextPadProvider.js'); //affects participants
-
-// Register the custom Modules
- var overrideModule = {
-   bpmnReplace: [ 'type', CustomBpmnReplace ]//,
-//     contextPadProvider: [ 'type', CustomContextPadProvider ]
- };
-
-var extensionModule = {
-//  __init__: [ 'ParticipantAttribute' ],
-//  ParticipantAttribute: [ 'type', ParticipantAttribute ]
-};
+var AofCustomizationModules=require('./aof-customization'); // affects activities
 
 // Load the Modeler
-var renderer = new BpmnModeler({ container: canvas , additionalModules: [ overrideModule ]});
-
-//var shape = elementFactory.createShape({ type: 'bpmn:PartnerRole','participantRef':businessObject });
-
-renderer.on('element.click',function(event){
-  console.log(event);
-});
-//var a=renderer.get('moddle');
-//a.create('bpmn:PartnerRole');
+var renderer = new BpmnModeler({ container: canvas , additionalModules: [AofCustomizationModules]});
 
 var newDiagramXML = fs.readFileSync(__dirname + '/../resources/newDiagram.bpmn', 'utf-8');
 
