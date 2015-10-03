@@ -201,7 +201,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         });
     }
 
-// TODO: Enable PartnerRole
+// TODO: Make partner Role only one time and assign always the same
 
     if(is(bpmnElement,'bpmn:Participant')){
 
