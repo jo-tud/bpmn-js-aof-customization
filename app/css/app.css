@@ -104,3 +104,8 @@ a:link {
 .performer-icon-active{
   background-color: rgb(255, 252, 176);
 }
+
+.appensemble:not(.djs-connection) .djs-visual > * {
+  stroke:  #0B2A51 !important; /* color elements as green */
+  fill: #CDD4E2 !important;
+}
