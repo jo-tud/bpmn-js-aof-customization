@@ -208,7 +208,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         assign(actions, {
             'partnerRole': {
                 group: 'edit',
-                className: 'icon-flag',
+                className: 'icon-appensemble',
                 title: 'Mark as AppEnsemble',
                 action: {
                     click: function(event,element){
@@ -221,6 +221,8 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                             // wire partnerRole with BPMN document (via Definitions)
                             definitions.get('rootElements').push(partnerRole);
                             eventBus.fire('commandStack.changed');
+
+                            canvas.addMarker(element.id, 'appensemble');
 
                         }
                     }
