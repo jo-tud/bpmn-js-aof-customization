@@ -94,7 +94,7 @@ a:link {
 .buttons a.active {
   opacity: 1.0;
 }
-.icon-flag{
+.icon-flag,.icon-appensemble{
   background-image: url('../resources/App.svg');
   background-repeat: no-repeat;
   background-position: right;
@@ -103,4 +103,12 @@ a:link {
 }
 .performer-icon-active{
   background-color: rgb(255, 252, 176);
+}
+
+.appensemble:not(.djs-connection) .djs-visual > * {
+  stroke:  #0B2A51 !important; /* color elements as green */
+  fill: #CDD4E2 !important;
+}
+.icon-appensemble{
+  background-image: url('../resources/AppEnsemble.svg');
 }

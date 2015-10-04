@@ -11,7 +11,7 @@ var assign = require('lodash/object/assign'),
  */
 function CustomContextPadProvider(contextPad, modeling, elementFactory,
                             connect, create, bpmnReplace,
-                            canvas, performerChooser) {
+                            canvas, performerChooser, eventBus) {
 
     contextPad.registerProvider(this);
 
@@ -25,6 +25,7 @@ function CustomContextPadProvider(contextPad, modeling, elementFactory,
     this._bpmnReplace = bpmnReplace;
     this._canvas  = canvas;
     this._performerChooser=performerChooser;
+    this._eventBus=eventBus;
 }
 
 CustomContextPadProvider.$inject = [
@@ -35,7 +36,8 @@ CustomContextPadProvider.$inject = [
     'create',
     'bpmnReplace',
     'canvas',
-    'performerChooser'
+    'performerChooser',
+    'eventBus'
 ];
 
 CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
@@ -48,7 +50,9 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         create = this._create,
         bpmnReplace = this._bpmnReplace,
         canvas = this._canvas,
-        performerChooser=this._performerChooser;
+        performerChooser=this._performerChooser,
+        eventBus=this._eventBus;
+
 
     var actions = {};
 
@@ -197,30 +201,36 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         });
     }
 
-// TODO: Enable PartnerRole
-/*
-    if(bpmnElement.$instanceOf('bpmn:Participant')){
+// TODO: Make partner Role only one time and assign always the same
+
+    if(is(bpmnElement,'bpmn:Participant')){
 
         assign(actions, {
             'partnerRole': {
                 group: 'edit',
-                className: 'icon-flag',
+                className: 'icon-appensemble',
                 title: 'Mark as AppEnsemble',
                 action: {
                     click: function(event,element){
-                        var bo=element.businessObject, inputtext;
-                        var result=window.confirm('Do you really like to mark the Participant ('+ bo.id+') as AppEnsemble?');
+                        var participant=element.businessObject, inputtext;
+                        var result=window.confirm('Do you really like to mark the Participant ('+ participant.id+') as AppEnsemble?');
                         if(result){
-                            var PartnerRole=elementFactory._bpmnFactory.create('bpmn:PartnerRole',{'name': "AppEnsemble"});
-                            var PartnerRoleShape=elementFactory.createShape({businessObject:PartnerRole});
-                            modeling.updateProperties(PartnerRole,{'participantRef':bo});
+                            var partnerRole = elementFactory._bpmnFactory.create('bpmn:PartnerRole', { name: 'AppEnsemble', participantRef: [ participant ] });
+                            // unwrap Participant -> Collaboration -> Definitions
+                            var definitions = participant.$parent.$parent;
+                            // wire partnerRole with BPMN document (via Definitions)
+                            definitions.get('rootElements').push(partnerRole);
+                            eventBus.fire('commandStack.changed');
+
+                            canvas.addMarker(element.id, 'appensemble');
+
                         }
                     }
                 }
             }
         });
 
-    }*/
+    }
 
     // Delete Element Entry
     assign(actions, {
