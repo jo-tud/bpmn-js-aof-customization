@@ -17,7 +17,7 @@
           "type": "String"
         }
       ]
-    }
+    },
     {
       "name": "AppensembleCustomization",
       "extends": [ "bpmn:Participant" ],
