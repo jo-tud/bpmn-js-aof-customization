@@ -12,7 +12,7 @@ var forEach = require('lodash/collection/forEach'),
  * @param {Modeling} modeling
  * @param {ElementFactory} elementFactory
  */
-function PerformerChooser(popupMenu, modeling, elementFactory) {
+function AppAssigner(popupMenu, modeling, elementFactory) {
 
     /**
      *  Function which gets the single Option entries
@@ -48,11 +48,11 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
     function getOptions(element) {
 
         var menuEntries = [];
-        addEntries(getOptionEntities(), markCurrentPerformer, setPerformer);
+        addEntries(getOptionEntities(), markCurrentApp, setApp);
 
-        // Adding a Menuentry for Manual creation of a Performer
-        var manualOption=[{label: 'Enter other Performer',uri: ''}];
-        addEntries(manualOption,function(data){return data;},setManualPerformer);
+        // Adding a Menuentry for Manual creation of a App
+        var manualOption=[{label: 'Enter other App',uri: ''}];
+        addEntries(manualOption,function(data){return data;},setManualApp);
 
 
         /**
@@ -77,7 +77,7 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
             return {
                 label: definition.label,
                 className: definition.className,
-                id: "set-performer-"+definition.label.toLowerCase().replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0').replace(/\s+/g,"_"),
+                id: "set-app-"+definition.label.toLowerCase().replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0').replace(/\s+/g,"_"),
                 action: function () {
                         actionHandler(element, definition.uri);
                 }
@@ -85,44 +85,44 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
         }
 
         /**
-         *  Function for filtering the Performerlist
-         *  TODO Make filter recognize that a manual Performer is set and add it to the menu
+         *  Function for filtering the Applist
+         *  TODO Make filter recognize that a manual App is set and add it to the menu
          **/
-        function markCurrentPerformer(performeritem) {
+        function markCurrentApp(appitem) {
 
-            if(element.businessObject.hasOwnProperty('resources') && element.businessObject.resources[0]!== null && element.businessObject.resources[0].name==performeritem.uri){
-                performeritem.className='performer-icon-active';
+            if(element.businessObject.hasOwnProperty('resources') && element.businessObject.resources[0]!== null && element.businessObject.resources[0].name==appitem.uri){
+                appitem.className='app-icon-active';
             }
             else{
-                performeritem.className='performer-icon';
+                appitem.className='app-icon';
             }
 
-            return performeritem;
+            return appitem;
         }
 
         return menuEntries;
     }
 
     /**
-     *  Action-handler which is called by clicking a menu-object. creates a new "bpmn:Performer" element and assigns it as resource to the Task
+     *  Action-handler which is called by clicking a menu-object. assignes an app to the userTask
      **/
-    function setPerformer(task, appUri) {
+    function setApp(task, appUri) {
         modeling.updateProperties(task,{'aof:realizedBy':appUri});
         task.popUp.close();
     }
 
     /**
-     *  Action-handler which is called when a custom Performer is to be assigned.
+     *  Action-handler which is called when a custom App is to be assigned.
      **/
-    function setManualPerformer(task){
-        var result=window.prompt('What is the URI of the custom Performer?');
+    function setManualApp(task){
+        var result=window.prompt('What is the URI of the custom App?');
         var pattern=new RegExp("(http|ftp|https)://[\w-]+(\.[\w-]*)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?");
         if(result==null) {
             task.popUp.close();
         }else if(!pattern.test(result)){
-            setManualPerformer(task);
+            setManualApp(task);
         } else {
-            setPerformer(task,result);
+            setApp(task,result);
         }
     }
 
@@ -144,6 +144,6 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
 
 }
 
-PerformerChooser.$inject = ['popupMenu', 'modeling', 'elementFactory','elementRegistry'];
+AppAssigner.$inject = ['popupMenu', 'modeling', 'elementFactory','elementRegistry'];
 
-module.exports = PerformerChooser;
+module.exports = AppAssigner;
