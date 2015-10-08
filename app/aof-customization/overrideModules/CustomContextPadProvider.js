@@ -185,7 +185,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         });
     }
 
-    if (is(bpmnElement, 'bpmn:Task')) {
+    if (is(bpmnElement, 'bpmn:UserTask')) {
 
         assign(actions, {
             'resource':{
