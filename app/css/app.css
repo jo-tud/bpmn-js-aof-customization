@@ -94,7 +94,7 @@ a:link {
 .buttons a.active {
   opacity: 1.0;
 }
-.icon-flag,.icon-appensemble{
+.icon-app,.icon-appensemble{
   background-image: url('../resources/App.svg');
   background-repeat: no-repeat;
   background-position: right;

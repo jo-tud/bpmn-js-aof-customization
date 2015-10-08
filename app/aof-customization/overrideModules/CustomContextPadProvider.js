@@ -190,7 +190,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         assign(actions, {
             'resource':{
                 group: 'edit',
-                className: 'icon-flag',
+                className: 'icon-app',
                 title: 'Set Resource',
                 action: {
                     click: function(event,element){
