@@ -201,8 +201,6 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         });
     }
 
-// TODO: Make partner Role only one time and assign always the same
-
     if(is(bpmnElement,'bpmn:Participant')){
 
         assign(actions, {
@@ -215,13 +213,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                         var participant=element.businessObject, inputtext;
                         var result=window.confirm('Do you really like to mark the Participant ('+ participant.id+') as AppEnsemble?');
                         if(result){
-                            var partnerRole = elementFactory._bpmnFactory.create('bpmn:PartnerRole', { name: 'AppEnsemble', participantRef: [ participant ] });
-                            // unwrap Participant -> Collaboration -> Definitions
-                            var definitions = participant.$parent.$parent;
-                            // wire partnerRole with BPMN document (via Definitions)
-                            definitions.get('rootElements').push(partnerRole);
-                            eventBus.fire('commandStack.changed');
-
+                            modeling.updateProperties(element,{'aof:isAppEnsemble':true});
                             canvas.addMarker(element.id, 'appensemble');
 
                         }
