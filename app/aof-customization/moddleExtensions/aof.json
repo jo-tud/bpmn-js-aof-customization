@@ -8,13 +8,24 @@
   "associations": [],
   "types": [
     {
-      "name": "Assignable",
+      "name": "AppCustomization",
       "extends": [ "bpmn:UserTask" ],
       "properties": [
         {
           "name": "realizedBy",
           "isAttr": true,
           "type": "String"
+        }
+      ]
+    }
+    {
+      "name": "AppensembleCustomization",
+      "extends": [ "bpmn:Participant" ],
+      "properties": [
+        {
+          "name": "isAppEnsemble",
+          "isAttr": true,
+          "type": "Boolean"
         }
       ]
     }
