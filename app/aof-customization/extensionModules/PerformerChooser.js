@@ -107,8 +107,7 @@ function PerformerChooser(popupMenu, modeling, elementFactory) {
      *  Action-handler which is called by clicking a menu-object. creates a new "bpmn:Performer" element and assigns it as resource to the Task
      **/
     function setPerformer(task, appUri) {
-        var resource = elementFactory._bpmnFactory.create('bpmn:Performer', {name: appUri});
-        modeling.updateProperties(task, {'resources': [resource]});
+        modeling.updateProperties(task,{'aof:realizedBy':appUri});
         task.popUp.close();
     }
 
