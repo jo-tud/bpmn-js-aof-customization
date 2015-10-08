@@ -3,8 +3,9 @@ var Modules = {
     bpmnReplace: ['type', require('./overrideModules/CustomReplace.js')],
     contextPadProvider: ['type', require('./overrideModules/CustomContextPadProvider.js')],
 //ExtensionModules
-    __init__: ['appAssigner'],//,'customRules'],
+    __init__: ['appAssigner','userTaskCreationListener'],//,'customRules'],
     appAssigner: ['type', require('./extensionModules/AppAssigner.js')],
+    userTaskCreationListener: ['type', require('./extensionModules/UserTaskCreationListener.js')],
    // customRules: ['type', require('./extensionModules/CustomRules.js')]
 };
 

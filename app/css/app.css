@@ -112,3 +112,12 @@ a:link {
 .icon-appensemble{
   background-image: url('../resources/AppEnsemble.svg');
 }
+
+
+.no-app-assigned:not(.djs-connection) .djs-visual rect{
+  stroke:  #000 !important;
+  fill: #CCC !important;
+}
+.no-app-assigned:not(.djs-connection) .djs-visual path{
+  fill: #fff !important;
+}
