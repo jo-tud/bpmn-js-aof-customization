@@ -14,10 +14,12 @@ var container = $('#js-drop-zone');
 var canvas = $('#js-canvas');
 
 // Reference to the custom Modules
-var AofCustomizationModules=require('./aof-customization'); // affects activities
+var AofCustomizationModules=require('./aof-customization'), // affects activities
+    aofModdleExtention = require('./aof-customization/moddleExtensions/aof');
+
 
 // Load the Modeler
-var renderer = new BpmnModeler({ container: canvas , additionalModules: [AofCustomizationModules]});
+var renderer = new BpmnModeler({ container: canvas , additionalModules: [AofCustomizationModules], moddleExtensions:{aof:aofModdleExtention} });
 
 var newDiagramXML = fs.readFileSync(__dirname + '/../resources/newDiagram.bpmn', 'utf-8');
 
