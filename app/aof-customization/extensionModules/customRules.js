@@ -32,19 +32,15 @@ CustomRules.prototype.init = function() {
 
         var target = context.target;
 
-        if(!!target){
+        if(!!target){   // !!=cast in boolean
             var shape = context.shapes[0]; // Remove [0] and check for a better solution
+            var shapeBo = shape.businessObject,
+                targetBo = target.businessObject;
             if(shape.type=="bpmn:UserTask"){
-                var shapeBo = shape.businessObject,
-                    targetBo = target.businessObject;
-
                 var allowDrop = targetBo.get('isAppEnsemble');
-
-                if (!allowDrop) {
-                    return false;
-                }
-                return true;
+                return !!allowDrop;
             }
+            //else if()
 
         }
 
