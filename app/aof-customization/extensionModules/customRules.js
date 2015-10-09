@@ -40,7 +40,7 @@ CustomRules.prototype.init = function() {
                 var allowDrop = targetBo.get('isAppEnsemble');
                 return !!allowDrop;
             }
-            //else if()
+            //else if() TODO:Add functionality, that no other tasks (everthing else is ok) can be dragged into an appEnsemble (evtl über shapebo->descriptor and then search for parent bpmn:Task
 
         }
 
