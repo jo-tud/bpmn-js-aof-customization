@@ -3,10 +3,10 @@ var Modules = {
     bpmnReplace: ['type', require('./overrideModules/CustomReplace.js')],
     contextPadProvider: ['type', require('./overrideModules/CustomContextPadProvider.js')],
 //ExtensionModules
-    __init__: ['appAssigner','userTaskCreationListener'],//,'customRules'],
+    __init__: ['appAssigner','userTaskCreationListener','customRules'],
     appAssigner: ['type', require('./extensionModules/AppAssigner.js')],
     userTaskCreationListener: ['type', require('./extensionModules/UserTaskCreationListener.js')],
-   // customRules: ['type', require('./extensionModules/CustomRules.js')]
+    customRules: ['type', require('./extensionModules/CustomRules.js')]
 };
 
 module.exports = Modules;
