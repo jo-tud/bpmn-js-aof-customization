@@ -27,34 +27,27 @@ module.exports = CustomRules;
 
 CustomRules.prototype.init = function() {
 
-    // there exist a number of modeling actions
-    // that are identified by a unique ID. We
-    // can hook into each one of them and make sure
-    // they are only allowed if we say so
-    this.addRule('shape.create',2000, function(context) {
 
-        var shape = context.shape,
-            target = context.target;
+    this.addRule('shapes.move',2000, function(context) {
 
-        // we check for a custom vendor:allowDrop attribute
-        // to be present on the BPMN 2.0 xml of the target
-        // node
-        //
-        // we could practically check for other things too,
-        // such as incoming / outgoing connections, element
-        // types, ...
-        var shapeBo = shape.businessObject,
-            targetBo = target.businessObject;
+        var target = context.target;
 
-        var allowDrop = targetBo.get('vendor:allowDrop');
+        if(!!target){
+            var shape = context.shapes[0]; // Remove [0] and check for a better solution
+            if(shape.type=="bpmn:UserTask"){
+                var shapeBo = shape.businessObject,
+                    targetBo = target.businessObject;
 
-        if (!allowDrop || !shapeBo.$instanceOf(allowDrop)) {
-            return false;
+                var allowDrop = targetBo.get('isAppEnsemble');
+
+                if (!allowDrop) {
+                    return false;
+                }
+                return true;
+            }
+
         }
 
-        // not returning anything means other rule
-        // providers can still do their work
-        //
-        // this allows us to reuse the existing BPMN rules
+
     });
 };
