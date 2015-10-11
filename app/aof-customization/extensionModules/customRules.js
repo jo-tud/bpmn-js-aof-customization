@@ -1,6 +1,7 @@
 'use strict';
 
 var inherits = require('inherits');
+var is = require('./../util/ModelUtil').is;
 
 var RuleProvider = require('diagram-js/lib/features/rules/RuleProvider');
 
@@ -31,16 +32,17 @@ CustomRules.prototype.init = function() {
     this.addRule('shapes.move',2000, function(context) {
 
         var target = context.target;
-
         if(!!target){   // !!=cast in boolean
-            var shape = context.shapes[0]; // Remove [0] and check for a better solution
+            var shape = context.shapes[0];
             var shapeBo = shape.businessObject,
                 targetBo = target.businessObject;
-            if(shape.type=="bpmn:UserTask"){
-                var allowDrop = targetBo.get('isAppEnsemble');
-                return !!allowDrop;
+            if(is(shapeBo, 'bpmn:Task')){
+                var targetIsAppEnsemble = targetBo.get('isAppEnsemble');
+                if(shape.type=="bpmn:UserTask" && !!targetIsAppEnsemble) return true;   // UserTask can only be dropped in AppEnsembles
+                else if(shape.type=="bpmn:UserTask" && !targetIsAppEnsemble) return false;  //not anywhere else
+                else if(shape.type!="bpmn:ManualTask" && shape.type!="bpmn:Task" && !!targetIsAppEnsemble) return false; //only manual, user and normal tasks can be dropped in AppEnsembles
             }
-            //else if() TODO:Add functionality, that no other tasks (everthing else is ok) can be dragged into an appEnsemble (evtl über shapebo->descriptor and then search for parent bpmn:Task
+            //TODO: what todo with subprocesses?
 
         }
 
