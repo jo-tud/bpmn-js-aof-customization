@@ -257,7 +257,7 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection, m
 
         if (is(businessObject, 'bpmn:FlowNode')) {
 
-            /* get the parent shape */
+            /* get the parent shape (for detecting if it is an AppEnsemble */
             var inElement=false;
             var containingElement;
             elementRegistry.filter(function(element,gfx){
