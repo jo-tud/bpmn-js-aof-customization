@@ -11,4 +11,4 @@ var Modules = {
 
 module.exports = Modules;
 
-//TODO: Add App.svg and correstponding css to the aof-customization module
+//TODO: Add App.svg and correstponding stylesheets to the aof-customization module
