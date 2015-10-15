@@ -95,7 +95,7 @@ a:link {
   opacity: 1.0;
 }
 .icon-app,.icon-appensemble{
-  background-image: url('../resources/App.svg');
+  background-image: url('../img/App.svg');
   background-repeat: no-repeat;
   background-position: right;
   vertical-align: top ;
@@ -110,7 +110,7 @@ a:link {
   fill: #CDD4E2 !important;
 }
 .icon-appensemble{
-  background-image: url('../resources/AppEnsemble.svg');
+  background-image: url('../img/AppEnsemble.svg');
 }
 
 
