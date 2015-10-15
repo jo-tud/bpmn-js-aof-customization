@@ -1,6 +1,6 @@
 {
   "name": "AOF",
-  "uri": "http://",
+  "uri": "http://eatld.et.tu-dresden.de/aof/",
   "prefix": "aof",
   "xml": {
     "tagAlias": "lowerCase"
