@@ -50,12 +50,12 @@ module.exports = function(grunt) {
           watch: true
         },
         files: {
-          '<%= config.dist %>/aof-modeler.js': [ '<%= config.sources %>/**/*.js' ]
+          '<%= config.dist %>/ae-modeler.js': [ '<%= config.sources %>/**/*.js' ]
         }
       },
       app: {
         files: {
-          '<%= config.dist %>/aof-modeler.js': [ '<%= config.sources %>/**/*.js' ]
+          '<%= config.dist %>/ae-modeler.js': [ '<%= config.sources %>/**/*.js' ]
         }
       }
     },
