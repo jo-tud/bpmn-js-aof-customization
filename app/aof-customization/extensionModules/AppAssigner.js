@@ -13,7 +13,7 @@ var forEach = require('lodash/collection/forEach'),
  * @param {ElementFactory} elementFactory
  */
 function AppAssigner(popupMenu, modeling, elementFactory) {
-
+    var options_url="../api/appuris";
     /**
      *  Function which gets the single Option entries
      *  TODO: move Ajaxrequest to module-initialization and do it asynchroniosly
@@ -22,10 +22,11 @@ function AppAssigner(popupMenu, modeling, elementFactory) {
         var jquery = require('jquery');
         var request_data = {};
 
-        var request = jquery.ajax('/bpmn-js-aof-customization/resources/sample.json', {
+        var request = jquery.ajax(options_url, {
             success: function (data, status, jqXHR) {
-                if (data.data) {
-                    request_data = data.data;
+                data=JSON.parse(data);
+                if (data.results) {
+                    request_data = data.results.bindings;
                 }
             },
             method: "GET",
@@ -41,7 +42,6 @@ function AppAssigner(popupMenu, modeling, elementFactory) {
         return request_data;
     }
 
-
     /**
      *  Function which provides the Options-Object for the popup-menu
      **/
@@ -51,7 +51,7 @@ function AppAssigner(popupMenu, modeling, elementFactory) {
         addEntries(getOptionEntities(), markCurrentApp, setApp);
 
         // Adding a Menuentry for Manual creation of a App
-        var manualOption=[{label: 'Enter other App',uri: ''}];
+        var manualOption=[{label: {value:'Enter other App'},uri: {value:''}}];
         addEntries(manualOption,function(data){return data;},setManualApp);
 
 
@@ -73,13 +73,13 @@ function AppAssigner(popupMenu, modeling, elementFactory) {
          *  Function used by the addEntries-function for providing the needed object-structure and to set the action-handler
          **/
         function addMenuEntry(definition,actionHandler) {
-
+            var label=definition.label.value;
             return {
-                label: definition.label,
+                label: label,
                 className: definition.className,
-                id: "set-app-"+definition.label.toLowerCase().replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0').replace(/\s+/g,"_"),
+                id: "set-app-"+label.toLowerCase().replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0').replace(/\s+/g,"_"),
                 action: function () {
-                        actionHandler(element, definition.uri);
+                        actionHandler(element, definition.uri.value);
                 }
             };
         }
