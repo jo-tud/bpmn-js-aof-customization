@@ -133,13 +133,13 @@ $(document).on('ready', function() {
       e.stopPropagation();
       var request = $.ajax($(this).attr('href'), {
         success: function (data, status, jqXHR) {
-          container.append('<div data-alert class="alert-box">'+data+'<a href="#" class="close">&times;</a></div>');
+          container.before('<div data-alert class="alert-box success ">'+data+'<a href="#" class="close">&times;</a></div>');
         },
         method: "GET",
         async: false,
         timeout: 1000,
         error: function (jqXHR, status, error) {
-          alert(status+" - "+error);
+          container.before('<div data-alert class="alert-box warning">There was a Problem saving the Appensemble<a href="#" class="close">&times;</a></div>');
         }
       });
     }
