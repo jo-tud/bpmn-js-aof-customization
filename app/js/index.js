@@ -1,5 +1,7 @@
 'use strict';
 
+if(!mode) var mode=urlParam('mode');
+if(!data) var data=urlParam('diagramXML');
 
 // replace ende
 var assign = require('lodash/object/assign');
@@ -57,9 +59,6 @@ function urlParam(name){
   }
 }
 // Mode and data processing
-
-var mode=urlParam('mode');
-var data=urlParam('diagramXML');
 if(mode=="view"){
   var renderer =new BpmnViewer({ container: canvas });
 }
