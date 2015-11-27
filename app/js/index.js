@@ -7,7 +7,8 @@ var assign = require('lodash/object/assign');
 var fs = require('fs');
 
 var $ = require('jquery'),
-    BpmnModeler = require('bpmn-js/lib/Modeler');
+    BpmnModeler = require('bpmn-js/lib/Modeler'),
+    BpmnViewer = require('bpmn-js/lib/Viewer');
 
 var container = $('#js-drop-zone');
 
@@ -17,22 +18,9 @@ var canvas = $('#js-canvas');
 var AofCustomizationModules=require('./../aof-customization/index'), // affects activities
     aofModdleExtention = require('./../aof-customization/moddleExtensions/aof');
 
+// Helper Functions
 
-
-// Load the Modeler
-var renderer = new BpmnModeler({ container: canvas , additionalModules: [AofCustomizationModules], moddleExtensions:{aof:aofModdleExtention} });
-
-var newDiagramXML = fs.readFileSync(__dirname + '/../../resources/newDiagram.bpmn', 'utf-8');
-
-function createNewDiagram(xmlstring) {
-  if(xmlstring){
-    newDiagramXML=decodeURIComponent(xmlstring);
-  }
-  openDiagram(newDiagramXML);
-}
-
-function openDiagram(xml) {
-
+function openDiagram(renderer,xml) {
   renderer.importXML(xml, function(err) {
 
     if (err) {
@@ -53,48 +41,10 @@ function openDiagram(xml) {
   });
 }
 
-function saveSVG(done) {
-  renderer.saveSVG(done);
-}
-
 function saveDiagram(done) {
-
   renderer.saveXML({ format: true }, function(err, xml) {
     done(err, xml);
   });
-}
-
-function registerFileDrop(container, callback) {
-
-  function handleFileSelect(e) {
-    e.stopPropagation();
-    e.preventDefault();
-
-    var files = e.dataTransfer.files;
-
-    var file = files[0];
-
-    var reader = new FileReader();
-
-    reader.onload = function(e) {
-
-      var xml = e.target.result;
-
-      callback(xml);
-    };
-
-    reader.readAsText(file);
-  }
-
-  function handleDragOver(e) {
-    e.stopPropagation();
-    e.preventDefault();
-
-    e.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-  }
-
-  container.get(0).addEventListener('dragover', handleDragOver, false);
-  container.get(0).addEventListener('drop', handleFileSelect, false);
 }
 
 function urlParam(name){
@@ -106,32 +56,29 @@ function urlParam(name){
     return results[1] || 0;
   }
 }
+// Mode and data processing
 
-////// file drag / drop ///////////////////////
-
-// check file api availability
-if (!window.FileList || !window.FileReader) {
-  window.alert(
-    'Looks like you use an older browser that does not support drag and drop. ' +
-    'Try using Chrome, Firefox or the Internet Explorer > 10.');
-} else {
-  registerFileDrop(container, openDiagram);
+var mode=urlParam('mode');
+var data=urlParam('diagramXML');
+if(mode=="view"){
+  var renderer =new BpmnViewer({ container: canvas });
+}
+else{
+  var renderer = new BpmnModeler({ container: canvas , additionalModules: [AofCustomizationModules], moddleExtensions:{aof:aofModdleExtention} });
+}
+if(mode=="view" || mode=="edit"){
+  var newDiagramXML=decodeURIComponent(data);
+}
+else{
+  var newDiagramXML = fs.readFileSync(__dirname + '/../../resources/newDiagram.bpmn', 'utf-8');
 }
 
 // bootstrap diagram functions
 
 $(document).on('ready', function() {
+  openDiagram(renderer,newDiagramXML);
 
-  $('#js-create-diagram').click(function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    if(urlParam('loadXML')){
-      createNewDiagram(urlParam('loadXML'));
-    }
-    else {
-      createNewDiagram();
-    }
-  });
+  // Saving and lifetime behavior
 
   var saveLink = $('#js-save-appensemble');
 
