@@ -2,16 +2,16 @@
 <head>
   <title>bpmn-js modeler demo</title>
 
-  <link rel="stylesheet" href="css/diagram-js.css" />
-  <link rel="stylesheet" href="vendor/bpmn-font/css/bpmn-embedded.css" />
-  <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="stylesheets/diagram-js.css" />
+  <link rel="stylesheet" href="stylesheets/bpmn-font/css/bpmn-embedded.css" />
+  <link rel="stylesheet" href="stylesheets/ae-modeler.css" />
 </head>
 <body>
   <div class="content" id="js-drop-zone">
 
     <div class="message intro">
       <div class="note">
-        Drop BPMN diagram from your desktop or <a id="js-create-diagram" href>create a new diagram</a> to get started.
+        BPMN-Modeler should start immediately!
       </div>
     </div>
 
@@ -31,19 +31,11 @@
 
   <ul class="buttons">
     <li>
-      download
-    </li>
-    <li>
-      <a id="js-download-diagram" href title="download BPMN diagram">
-        BPMN diagram
-      </a>
-    </li>
-    <li>
-      <a id="js-download-svg" href title="download as SVG image">
-        SVG image
+      <a id="js-save-appensemble" href title="save the AppEnsemble">
+        SAVE APPENSEMBLE
       </a>
     </li>
   </ul>
 
-  <script src="index.js"></script>
+  <script src="js/ae-modeler.js"></script>
 </html>

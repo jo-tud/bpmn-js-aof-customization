@@ -36,7 +36,7 @@ var CUSTOM_PROPERTIES = [
  * @param {PopupMenu} popupMenu
  * @param {Replace} replace
  */
-function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection, modeling, eventBus) {
+function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection, modeling, eventBus, elementRegistry) {
 
   var self = this,
       currentElement;
@@ -211,52 +211,65 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection, m
         var menuEntries = [];
         var businessObject = element.businessObject;
 
-    if (is(businessObject, 'bpmn:StartEvent')) {
-            addEntries(startEventReplace, filterEvents);
+        if (is(businessObject, 'bpmn:StartEvent')) {
+                addEntries(startEventReplace, filterEvents);
+            } else
+
+        if (is(businessObject, 'bpmn:IntermediateCatchEvent') ||
+            is(businessObject, 'bpmn:IntermediateThrowEvent')) {
+
+                addEntries(intermediateEventReplace, filterEvents);
+            } else
+
+        if (is(businessObject, 'bpmn:EndEvent')) {
+
+                addEntries(endEventReplace, filterEvents);
+            } else
+
+        if (is(businessObject, 'bpmn:Gateway')) {
+
+                addEntries(gatewayReplace, function(entry) {
+
+                    return entry.target.type  !== businessObject.$type;
+                });
+            } else
+
+        if (is(businessObject, 'bpmn:Transaction')) {
+
+          addEntries(transactionReplace, filterEvents);
         } else
 
-    if (is(businessObject, 'bpmn:IntermediateCatchEvent') ||
-        is(businessObject, 'bpmn:IntermediateThrowEvent')) {
+        if (is(businessObject, 'bpmn:SubProcess') && isExpanded(businessObject)) {
 
-            addEntries(intermediateEventReplace, filterEvents);
+          addEntries(subProcessExpandedReplace, filterEvents);
         } else
 
-    if (is(businessObject, 'bpmn:EndEvent')) {
+        if (is(businessObject, 'bpmn:AdHocSubProcess') && !isExpanded(businessObject)) {
 
-            addEntries(endEventReplace, filterEvents);
+          addEntries(taskReplace, function(entry) {
+            return entry.target.type !== 'bpmn:SubProcess';
+          });
         } else
 
-    if (is(businessObject, 'bpmn:Gateway')) {
+        if (is(businessObject, 'bpmn:BoundaryEvent')) {
+          addEntries(boundaryEventReplace, filterEvents);
+        } else
 
-            addEntries(gatewayReplace, function(entry) {
+        if (is(businessObject, 'bpmn:FlowNode')) {
 
-                return entry.target.type  !== businessObject.$type;
+            /* get the parent shape (for detecting if it is an AppEnsemble */
+            var inElement=false;
+            var containingElement;
+            elementRegistry.filter(function(element,gfx){
+                forEach(element.children,function(child){
+                    if(child.id==businessObject.id){inElement=true;}
+                });
+                if(inElement){containingElement=element;inElement=false;}
             });
-        } else
 
-    if (is(businessObject, 'bpmn:Transaction')) {
-
-      addEntries(transactionReplace, filterEvents);
-    } else
-
-    if (is(businessObject, 'bpmn:SubProcess') && isExpanded(businessObject)) {
-
-      addEntries(subProcessExpandedReplace, filterEvents);
-    } else
-
-    if (is(businessObject, 'bpmn:AdHocSubProcess') && !isExpanded(businessObject)) {
-
-      addEntries(taskReplace, function(entry) {
-        return entry.target.type !== 'bpmn:SubProcess';
-      });
-    } else
-
-    if (is(businessObject, 'bpmn:BoundaryEvent')) {
-      addEntries(boundaryEventReplace, filterEvents);
-    } else
-
-    if (is(businessObject, 'bpmn:FlowNode')) {
-      addEntries(taskReplace,filterFlowNodes);
+            /* if the parent shape is a appEnsemble Participant enable the right filter */
+            if(containingElement.businessObject.isAppEnsemble) addEntries(taskReplace,filterFlowNodes_inAppEnsemble);
+            else addEntries(taskReplace,filterFlowNodes);
         }
 
         function filterEvents(entry) {
@@ -281,14 +294,16 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection, m
 // Added to filter task types
         function filterFlowNodes(entry){
             //return entry.target.type  !== businessObject.$type;
-            if(entry.target.type=="bpmn:ManualTask" || entry.target.type=="bpmn:UserTask")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            if(entry.target.type=="bpmn:UserTask") return false;
+            else   return true;
+
+        }
+
+        function filterFlowNodes_inAppEnsemble(entry){
+            //return entry.target.type  !== businessObject.$type;
+            if(entry.target.type=="bpmn:ManualTask" || entry.target.type=="bpmn:UserTask") return true;
+            else   return false;
+
         }
 
         function addEntries(entries, filterFun) {
@@ -353,6 +368,6 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection, m
     this.replaceElement = replaceElement;
 }
 
-CustomBpmnReplace.$inject = [ 'bpmnFactory', 'moddle', 'popupMenu', 'replace', 'selection', 'modeling', 'eventBus' ];
+CustomBpmnReplace.$inject = [ 'bpmnFactory', 'moddle', 'popupMenu', 'replace', 'selection', 'modeling', 'eventBus','elementRegistry' ];
 
 module.exports = CustomBpmnReplace;

@@ -1,0 +1,34 @@
+{
+  "name": "AOF",
+  "uri": "http://eatld.et.tu-dresden.de/aof/",
+  "prefix": "aof",
+  "xml": {
+    "tagAlias": "lowerCase"
+  },
+  "associations": [],
+  "types": [
+    {
+      "name": "AppCustomization",
+      "extends": [ "bpmn:UserTask" ],
+      "properties": [
+        {
+          "name": "realizedBy",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "AppensembleCustomization",
+      "extends": [ "bpmn:Participant" ],
+      "properties": [
+        {
+          "name": "isAppEnsemble",
+          "isAttr": true,
+          "type": "Boolean"
+        }
+      ]
+    }
+  ],
+  "emumerations": [ ]
+}

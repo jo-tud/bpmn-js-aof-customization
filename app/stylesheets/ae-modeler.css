@@ -2,17 +2,6 @@
   box-sizing: border-box;
 }
 
-body, html {
-
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-
-  font-size: 12px;
-
-  height: 100%;
-  padding: 0;
-  margin: 0;
-}
-
 a:link {
   text-decoration: none;
 }
@@ -21,12 +10,12 @@ a:link {
 .content > div {
   width: 100%;
   height: 100%;
+  line-height:1;
 }
 
 .content > .message {
   text-align: center;
   display: table;
-
   font-size: 16px;
   color: #111;
 }
@@ -94,14 +83,14 @@ a:link {
 .buttons a.active {
   opacity: 1.0;
 }
-.icon-flag,.icon-appensemble{
-  background-image: url('../resources/App.svg');
+.icon-app,.icon-appensemble{
+  background-image: url('../img/App.svg');
   background-repeat: no-repeat;
   background-position: right;
   vertical-align: top ;
   background-size: 80%;
 }
-.performer-icon-active{
+.app-icon-active{
   background-color: rgb(255, 252, 176);
 }
 
@@ -110,5 +99,15 @@ a:link {
   fill: #CDD4E2 !important;
 }
 .icon-appensemble{
-  background-image: url('../resources/AppEnsemble.svg');
+  background-image: url('../img/AppEnsemble.svg');
 }
+
+
+.no-app-assigned:not(.djs-connection) .djs-visual rect{
+  stroke:  #000 !important;
+  fill: #CCC !important;
+}
+.no-app-assigned:not(.djs-connection) .djs-visual path{
+  fill: #fff !important;
+}
+

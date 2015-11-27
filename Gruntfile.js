@@ -50,12 +50,12 @@ module.exports = function(grunt) {
           watch: true
         },
         files: {
-          '<%= config.dist %>/index.js': [ '<%= config.sources %>/**/*.js' ]
+          '<%= config.dist %>/js/ae-modeler.js': [ '<%= config.sources %>/**/*.js' ]
         }
       },
       app: {
         files: {
-          '<%= config.dist %>/index.js': [ '<%= config.sources %>/**/*.js' ]
+          '<%= config.dist %>/js/ae-modeler.js': [ '<%= config.sources %>/**/*.js' ]
         }
       }
     },
@@ -64,7 +64,7 @@ module.exports = function(grunt) {
         files: [
           {
             src: resolvePath('diagram-js', 'assets/diagram-js.css'),
-            dest: '<%= config.dist %>/css/diagram-js.css'
+            dest: '<%= config.dist %>/stylesheets/diagram-js.css'
           }
         ]
       },
@@ -74,7 +74,7 @@ module.exports = function(grunt) {
             expand: true,
             cwd: resolvePath('bpmn-js', 'assets'),
             src: ['**/*.*', '!**/*.js'],
-            dest: '<%= config.dist %>/vendor'
+            dest: '<%= config.dist %>/stylesheets'
           }
         ]
       },
@@ -83,7 +83,7 @@ module.exports = function(grunt) {
           {
             expand: true,
             cwd: '<%= config.sources %>/',
-            src: ['**/*.*', '!**/*.js'],
+            src: ['**/*.*', '!**/*.js', '!**/*.json'],
             dest: '<%= config.dist %>'
           }
         ]
