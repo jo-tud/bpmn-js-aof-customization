@@ -24,7 +24,10 @@ var renderer = new BpmnModeler({ container: canvas , additionalModules: [AofCust
 
 var newDiagramXML = fs.readFileSync(__dirname + '/../../resources/newDiagram.bpmn', 'utf-8');
 
-function createNewDiagram() {
+function createNewDiagram(xmlstring) {
+  if(xmlstring){
+    newDiagramXML=decodeURIComponent(xmlstring);
+  }
   openDiagram(newDiagramXML);
 }
 
@@ -94,6 +97,15 @@ function registerFileDrop(container, callback) {
   container.get(0).addEventListener('drop', handleFileSelect, false);
 }
 
+function urlParam(name){
+  var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+  if (results==null){
+    return null;
+  }
+  else{
+    return results[1] || 0;
+  }
+}
 
 ////// file drag / drop ///////////////////////
 
@@ -113,8 +125,12 @@ $(document).on('ready', function() {
   $('#js-create-diagram').click(function(e) {
     e.stopPropagation();
     e.preventDefault();
-
-    createNewDiagram();
+    if(urlParam('loadXML')){
+      createNewDiagram(urlParam('loadXML'));
+    }
+    else {
+      createNewDiagram();
+    }
   });
 
   var saveLink = $('#js-save-appensemble');
