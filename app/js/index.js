@@ -18,6 +18,7 @@ var AofCustomizationModules=require('./../aof-customization/index'), // affects 
     aofModdleExtention = require('./../aof-customization/moddleExtensions/aof');
 
 
+
 // Load the Modeler
 var renderer = new BpmnModeler({ container: canvas , additionalModules: [AofCustomizationModules], moddleExtensions:{aof:aofModdleExtention} });
 
@@ -116,8 +117,6 @@ $(document).on('ready', function() {
     createNewDiagram();
   });
 
-  var downloadLink = $('#js-download-diagram');
-  var downloadSvgLink = $('#js-download-svg');
   var saveLink = $('#js-save-appensemble');
 
   $('.buttons a').click(function(e) {
@@ -145,19 +144,6 @@ $(document).on('ready', function() {
     }
   });
 
-  function setEncoded_dl(link, name, data) {
-    var encodedData = encodeURIComponent(data);
-
-    if (data) {
-      link.addClass('active').attr({
-        'href': 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData,
-        'download': name
-      });
-    } else {
-      link.removeClass('active');
-    }
-  }
-
   function setEncoded(link, name, data) {
     var encodedData = encodeURIComponent(data);
 
@@ -174,15 +160,6 @@ $(document).on('ready', function() {
   var _ = require('lodash');
 
   var exportArtifacts = _.debounce(function() {
-
-    saveSVG(function(err, svg) {
-      setEncoded_dl(downloadSvgLink, 'diagram.svg', err ? null : svg);
-    });
-
-    saveDiagram(function(err, xml) {
-      setEncoded_dl(downloadLink, 'diagram.bpmn', err ? null : xml);
-    });
-
     saveDiagram(function(err, xml) {
       setEncoded(saveLink, 'diagram.bpmn', err ? null : xml);
     });
