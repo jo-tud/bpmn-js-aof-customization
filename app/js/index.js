@@ -1,7 +1,9 @@
 'use strict';
 
-if(!mode) var mode=urlParam('mode');
-if(!data) var data=urlParam('diagramXML');
+if(window.mode)var mode=window.mode;
+else var mode=urlParam('mode');
+if(window.urlencodedXML) var urlencodedXML=window.urlencodedXML;
+else var urlencodedXML=urlParam('diagramXML');
 
 // replace ende
 var assign = require('lodash/object/assign');
@@ -66,7 +68,7 @@ else{
   var renderer = new BpmnModeler({ container: canvas , additionalModules: [AofCustomizationModules], moddleExtensions:{aof:aofModdleExtention} });
 }
 if(mode=="view" || mode=="edit"){
-  var newDiagramXML=decodeURIComponent(data);
+  var newDiagramXML=decodeURIComponent(urlencodedXML);
 }
 else{
   var newDiagramXML = fs.readFileSync(__dirname + '/../../resources/newDiagram.bpmn', 'utf-8');
