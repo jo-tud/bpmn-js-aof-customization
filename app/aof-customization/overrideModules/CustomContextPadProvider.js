@@ -125,29 +125,29 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
             !isEventType(bpmnElement, 'bpmn:IntermediateThrowEvent', 'bpmn:LinkEventDefinition')) {
 
             assign(actions, {
-                'append.end-event': appendAction('bpmn:EndEvent', 'icon-end-event-none'),
-                'append.gateway': appendAction('bpmn:ExclusiveGateway', 'icon-gateway-xor'),
-                'append.append-task': appendAction('bpmn:Task', 'icon-task'),
+                'append.end-event': appendAction('bpmn:EndEvent', 'bpmn-icon-end-event-none'),
+                'append.gateway': appendAction('bpmn:ExclusiveGateway', 'bpmn-icon-gateway-xor'),
+                'append.append-task': appendAction('bpmn:Task', 'bpmn-icon-task'),
                 'append.intermediate-event': appendAction('bpmn:IntermediateThrowEvent',
-                    'icon-intermediate-event-none')
+                    'bpmn-icon-intermediate-event-none')
             });
         }
 
     if (is(bpmnElement, 'bpmn:EventBasedGateway')) {
 
             assign(actions, {
-                'append.receive-task': appendAction('bpmn:ReceiveTask', 'icon-receive-task'),
+                'append.receive-task': appendAction('bpmn:ReceiveTask', 'bpmn-icon-receive-task'),
                 'append.message-intermediate-event': appendAction('bpmn:IntermediateCatchEvent',
-                    'icon-intermediate-event-catch-message',
+                    'bpmn-icon-intermediate-event-catch-message',
                     { _eventDefinitionType: 'bpmn:MessageEventDefinition'}),
                 'append.timer-intermediate-event': appendAction('bpmn:IntermediateCatchEvent',
-                    'icon-intermediate-event-catch-timer',
+                    'bpmn-icon-intermediate-event-catch-timer',
                     { _eventDefinitionType: 'bpmn:TimerEventDefinition'}),
                 'append.condtion-intermediate-event': appendAction('bpmn:IntermediateCatchEvent',
-                    'icon-intermediate-event-catch-condition',
+                    'bpmn-icon-intermediate-event-catch-condition',
                     { _eventDefinitionType: 'bpmn:ConditionalEventDefinition'}),
                 'append.signal-intermediate-event': appendAction('bpmn:IntermediateCatchEvent',
-                    'icon-intermediate-event-catch-signal',
+                    'bpmn-icon-intermediate-event-catch-signal',
                     { _eventDefinitionType: 'bpmn:SignalEventDefinition'})
             });
         }
@@ -157,7 +157,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
             assign(actions, {
                 'replace': {
                     group: 'edit',
-                    className: 'icon-screw-wrench',
+                    className: 'bpmn-icon-screw-wrench',
                     title: 'Change type',
                     action: {
                         click: function(event, element) {
@@ -172,11 +172,11 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
       is(bpmnElement, 'bpmn:InteractionNode')) {
 
         assign(actions, {
-            'append.text-annotation': appendAction('bpmn:TextAnnotation', 'icon-text-annotation'),
+            'append.text-annotation': appendAction('bpmn:TextAnnotation', 'bpmn-icon-text-annotation'),
 
             'connect': {
                 group: 'connect',
-                className: 'icon-connection-multi',
+                className: 'bpmn-icon-connection-multi',
                 title: 'Connect using Sequence/MessageFlow',
                 action: {
                     click: startConnect,
@@ -191,7 +191,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
             assign(actions, {
                 'removeapp':{
                     group: 'edit',
-                    className: 'icon-app-remove',
+                    className: 'bpmn-icon-app-remove',
                     title: 'Remove App-Uri',
                     action: {
                         click: function(event,element){
@@ -205,7 +205,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         assign(actions, {
             'setapp':{
                 group: 'edit',
-                className: 'icon-app',
+                className: 'bpmn-icon-app',
                 title: 'Set App-Uri',
                 action: {
                     click: function(event,element){
@@ -222,7 +222,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
         assign(actions, {
             'partnerRole': {
                 group: 'edit',
-                className: 'icon-appensemble',
+                className: 'bpmn-icon-appensemble',
                 title: 'Mark as App-Ensemble',
                 action: {
                     click: function(event,element){
@@ -244,7 +244,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
     assign(actions, {
         'delete': {
             group: 'edit',
-            className: 'icon-trash',
+            className: 'bpmn-icon-trash',
             title: 'Remove',
             action: {
                 click: removeElement,

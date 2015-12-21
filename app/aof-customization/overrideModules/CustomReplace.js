@@ -152,7 +152,7 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection, m
     var loopEntries = [
       {
         id: 'toggle-parallel-mi',
-        className: 'icon-parallel-mi-marker',
+        className: 'bpmn-icon-parallel-mi-marker',
         active: isParallel,
         action: toggleLoopEntry,
         options: {
@@ -162,7 +162,7 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection, m
       },
       {
         id: 'toggle-sequential-mi',
-        className: 'icon-sequential-mi-marker',
+        className: 'bpmn-icon-sequential-mi-marker',
         active: isSequential,
         action: toggleLoopEntry,
         options: {
@@ -172,7 +172,7 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection, m
       },
       {
         id: 'toggle-loop',
-        className: 'icon-loop-marker',
+        className: 'bpmn-icon-loop-marker',
         active: isLoop,
         action: toggleLoopEntry,
         options: {
@@ -191,7 +191,7 @@ function CustomBpmnReplace(bpmnFactory, moddle, popupMenu, replace, selection, m
 
     var adHocEntry = {
       id: 'toggle-adhoc',
-      className: 'icon-ad-hoc-marker',
+      className: 'bpmn-icon-ad-hoc-marker',
       active: isAdHoc,
       action: function(event, entry) {
         if (isAdHoc) {
