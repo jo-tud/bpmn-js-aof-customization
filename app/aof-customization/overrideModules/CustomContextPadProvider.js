@@ -3,7 +3,8 @@
 
 var assign = require('lodash/object/assign'),
     forEach = require('lodash/collection/forEach'),
-    is = require('./../util/ModelUtil').is;
+    is = require('./../util/ModelUtil').is,
+    getBO= require('./../util/ModelUtil').getBusinessObject();
 
 
 /**
@@ -186,15 +187,30 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
     }
 
     if (is(bpmnElement, 'bpmn:UserTask')) {
-
+        if(bpmnElement.$attrs["aof:isAppEnsembleApp"] && bpmnElement.$attrs["aof:isAppEnsembleApp"]==true){
+            assign(actions, {
+                'removeapp':{
+                    group: 'edit',
+                    className: 'icon-app-remove',
+                    title: 'Remove App-Uri',
+                    action: {
+                        click: function(event,element){
+                            modeling.updateProperties(element,{'aof:isAppEnsembleApp':false});
+                            modeling.updateProperties(element,{'aof:realizedBy':""});
+                        }
+                    }
+                }
+            });
+        }
         assign(actions, {
-            'resource':{
+            'setapp':{
                 group: 'edit',
                 className: 'icon-app',
-                title: 'Set Resource',
+                title: 'Set App-Uri',
                 action: {
                     click: function(event,element){
-                        appAssigner.openChooser(getReplaceMenuPosition(element), element);
+                        //appAssigner.openChooser(getReplaceMenuPosition(element), element);
+                        modeling.updateProperties(element,{'aof:isAppEnsembleApp':true});
                     }
                 }
             }
@@ -207,11 +223,11 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
             'partnerRole': {
                 group: 'edit',
                 className: 'icon-appensemble',
-                title: 'Mark as AppEnsemble',
+                title: 'Mark as App-Ensemble',
                 action: {
                     click: function(event,element){
                         var participant=element.businessObject, inputtext;
-                        var result=window.confirm('Do you really like to mark the Participant ('+ participant.id+') as AppEnsemble?');
+                        var result=window.confirm('Do you really like to mark the Participant ('+ participant.id+') as App-Ensemble?');
                         if(result){
                             modeling.updateProperties(element,{'aof:isAppEnsemble':true});
                             canvas.addMarker(element.id, 'appensemble');
