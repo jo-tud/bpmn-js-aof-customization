@@ -211,6 +211,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                     click: function(event,element){
                         //appAssigner.openChooser(getReplaceMenuPosition(element), element);
                         modeling.updateProperties(element,{'aof:isAppEnsembleApp':true});
+                        canvas.addMarker(element.id, 'color-appensembleapp');
                     }
                 }
             }
@@ -230,7 +231,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                         var result=window.confirm('Do you really like to mark the Participant ('+ participant.id+') as App-Ensemble?');
                         if(result){
                             modeling.updateProperties(element,{'aof:isAppEnsemble':true});
-                            canvas.addMarker(element.id, 'appensemble');
+                            canvas.addMarker(element.id, 'color-appensemble');
 
                         }
                     }
