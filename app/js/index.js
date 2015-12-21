@@ -86,6 +86,7 @@ $(document).on('ready', function() {
 
   var downloadSvgLink = $('#js-download-svg');
   var saveLink = $('#js-save-appensemble');
+  var closeLink=$('#close-modeler');
 
   if(mode=="view") {
     saveLink.remove();
@@ -110,7 +111,11 @@ $(document).on('ready', function() {
     });
   }
 
-  $('.actionbuttons a').click(function(e) {
+  closeLink.click(function(){
+    window.location.href = document.referrer;
+  })
+
+  $('.top-bar-section .right a').click(function(e) {
     if (!$(this).is('.active')) {
       e.preventDefault();
       e.stopPropagation();
