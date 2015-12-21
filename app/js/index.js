@@ -91,6 +91,8 @@ $(document).on('ready', function() {
 
   if(mode=="view") {
     saveLink.remove();
+    saveandCloseLink.remove();
+    downloadSvgLink.remove();
   }
   else{
     saveLink.click(function (e) {
