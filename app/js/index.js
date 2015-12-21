@@ -82,39 +82,42 @@ else{
 
 $(document).on('ready', function() {
   openDiagram(renderer,newDiagramXML);
-
-  // Saving and lifetime behavior
-
-    createNewDiagram();
   });
 
   var downloadSvgLink = $('#js-download-svg');
   var saveLink = $('#js-save-appensemble');
 
-  $('.buttons a').click(function(e) {
+  if(mode=="view") {
+    saveLink.remove();
+  }
+  else{
+    $('#js-save-appensemble').click(function (e) {
+      if ($(this).is('.active')) {
+        e.preventDefault();
+        e.stopPropagation();
+        var request = $.ajax($(this).attr('href'), {
+          success: function (data, status, jqXHR) {
+            container.before('<div data-alert class="alert-box success ">' + data + '<a href="#" class="close">&times;</a></div>');
+          },
+          method: "GET",
+          async: false,
+          timeout: 1000,
+          error: function (jqXHR, status, error) {
+            container.before('<div data-alert class="alert-box warning">There was a Problem saving the Appensemble<a href="#" class="close">&times;</a></div>');
+          }
+        });
+      }
+    });
+  }
+
+  $('.actionbuttons a').click(function(e) {
     if (!$(this).is('.active')) {
       e.preventDefault();
       e.stopPropagation();
     }
   });
 
-  $('#js-save-appensemble').click(function(e) {
-    if ($(this).is('.active')) {
-      e.preventDefault();
-      e.stopPropagation();
-      var request = $.ajax($(this).attr('href'), {
-        success: function (data, status, jqXHR) {
-          container.before('<div data-alert class="alert-box success ">'+data+'<a href="#" class="close">&times;</a></div>');
-        },
-        method: "GET",
-        async: false,
-        timeout: 1000,
-        error: function (jqXHR, status, error) {
-          container.before('<div data-alert class="alert-box warning">There was a Problem saving the Appensemble<a href="#" class="close">&times;</a></div>');
-        }
-      });
-    }
-  });
+
 
   function setEncoded_dl(link, name, data) {
     var encodedData = encodeURIComponent(data);
