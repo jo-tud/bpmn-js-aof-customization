@@ -91,3 +91,24 @@ a:link {
   fill: #fff !important;
 }
 
+#js-save-appensemble,#close-modeler ,#js-download-svg,#js-save-appensemble-and-close{
+  background-position:left center;
+  background-size: 35px;
+  background-repeat:no-repeat;
+  padding-left:40px;
+}
+
+#js-save-appensemble-and-close{
+  background-image: url('../img/iconmonstr-save-2-icon.svg');
+}
+#js-save-appensemble{
+  background-image: url('../img/iconmonstr-save-5-icon.svg');
+}
+#js-download-svg{
+  background-image: url('../img/iconmonstr-picture-multi-2-icon.svg');
+}
+#close-modeler{
+  background-image: url('../img/iconmonstr-x-mark-4-icon.svg');
+}
+
+
