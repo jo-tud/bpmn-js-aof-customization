@@ -82,6 +82,7 @@ else{
 
 $(document).on('ready', function() {
   openDiagram(renderer,newDiagramXML);
+  window.onbeforeunload=function(){return "Do you really want to leave this page? There might be a loss of unsaved data!"}
   });
 
   var downloadSvgLink = $('#js-download-svg');
