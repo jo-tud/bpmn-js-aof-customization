@@ -57,6 +57,11 @@ module.exports = function(grunt) {
         files: {
           '<%= config.dist %>/js/ae-modeler.js': [ '<%= config.sources %>/**/*.js' ]
         }
+      },
+      transfer: {
+        files: {
+          '../../PycharmProjects/aof/aof/static/js/ae-modeler.js': [ '<%= config.sources %>/**/*.js' ]
+        }
       }
     },
     copy: {
@@ -115,6 +120,8 @@ module.exports = function(grunt) {
   // tasks
 
   grunt.registerTask('build', [ 'copy', 'browserify:app' ]);
+
+  grunt.registerTask('transfer', [ 'browserify:transfer' ]);
 
   grunt.registerTask('auto-build', [
     'copy',
