@@ -12,7 +12,8 @@ var fs = require('fs');
 
 var $ = require('jquery'),
     BpmnModeler = require('bpmn-js/lib/Modeler'),
-    BpmnViewer = require('bpmn-js/lib/Viewer');
+    BpmnViewer = require('bpmn-js/lib/Viewer'),
+    AppAssigner=require('./../aof-customization/extensionModules/AppAssigner');
 
 var container = $('#js-drop-zone');
 
@@ -43,6 +44,9 @@ function openDiagram(renderer,xml) {
 
 
   });
+}
+function saveSVG(done) {
+  renderer.saveSVG(done);
 }
 
 function saveDiagram(done) {
@@ -81,6 +85,10 @@ $(document).on('ready', function() {
 
   // Saving and lifetime behavior
 
+    createNewDiagram();
+  });
+
+  var downloadSvgLink = $('#js-download-svg');
   var saveLink = $('#js-save-appensemble');
 
   $('.buttons a').click(function(e) {
@@ -108,6 +116,19 @@ $(document).on('ready', function() {
     }
   });
 
+  function setEncoded_dl(link, name, data) {
+    var encodedData = encodeURIComponent(data);
+
+    if (data) {
+      link.addClass('active').attr({
+        'href': 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData,
+        'download': name
+      });
+    } else {
+      link.removeClass('active');
+    }
+  }
+
   function setEncoded(link, name, data) {
     var encodedData = encodeURIComponent(data);
 
@@ -127,9 +148,10 @@ $(document).on('ready', function() {
     saveDiagram(function(err, xml) {
       setEncoded(saveLink, 'diagram.bpmn', err ? null : xml);
     });
-
+    saveSVG(function(err, svg) {
+      setEncoded_dl(downloadSvgLink, 'diagram.svg', err ? null : svg);
+    });
   }, 500);
 
-  renderer.on('commandStack.changed', exportArtifacts);
 
-});
+  renderer.on('commandStack.changed', exportArtifacts);
