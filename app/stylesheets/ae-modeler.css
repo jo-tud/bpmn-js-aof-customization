@@ -63,7 +63,7 @@ a:link {
 .defaultinactive a.active {
   opacity: 1.0;
 }
-.icon-app,.icon-appensemble{
+.icon-app,.icon-appensemble,.icon-app-remove{
   background-image: url('../img/App.svg');
   background-repeat: no-repeat;
   background-position: right;
@@ -81,7 +81,9 @@ a:link {
 .icon-appensemble{
   background-image: url('../img/AppEnsemble.svg');
 }
-
+.icon-app-remove{
+  background-image: url('../img/App-remove.svg');
+}
 
 .no-app-assigned:not(.djs-connection) .djs-visual rect{
   stroke:  #000 !important;
