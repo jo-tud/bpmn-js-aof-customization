@@ -102,13 +102,13 @@ $(document).on('ready', function() {
         e.stopPropagation();
         var request = $.ajax($(this).attr('href'), {
           success: function (data, status, jqXHR) {
-            container.before('<div data-alert class="alert-box success ">' + data + '<a href="#" class="close">&times;</a></div>');
+            container.before('<div data-alert class="alert-box success ">' + data + '</div>');
             setTimeout(function() {
               $.when($('.alert-box').fadeOut(500))
                   .done(function () {
                     $('.alert-box').remove();
                   });
-            },3000);
+            },2000);
           },
           method: "GET",
           async: false,
