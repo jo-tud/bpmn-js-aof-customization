@@ -103,6 +103,12 @@ $(document).on('ready', function() {
         var request = $.ajax($(this).attr('href'), {
           success: function (data, status, jqXHR) {
             container.before('<div data-alert class="alert-box success ">' + data + '<a href="#" class="close">&times;</a></div>');
+            setTimeout(function() {
+              $.when($('.alert-box').fadeOut(500))
+                  .done(function () {
+                    $('.alert-box').remove();
+                  });
+            },3000);
           },
           method: "GET",
           async: false,
