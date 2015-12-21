@@ -55,34 +55,32 @@ a:link {
   visibility: visible;
 }
 
-
+/* Menu */
 .defaultinactive a {
   opacity: 0.3;
 }
-
 .defaultinactive a.active {
   opacity: 1.0;
 }
-.icon-app,.icon-appensemble,.icon-app-remove{
-  background-image: url('../img/App.svg');
-  background-repeat: no-repeat;
-  background-position: right;
-  vertical-align: top ;
-  background-size: 80%;
-}
+
+/* Context Pad */
 .app-icon-active{
   background-color: rgb(255, 252, 176);
 }
+.icon-appensemble:before{
+  content: url('../img/AppEnsemble.svg');
+}
+.icon-app-remove:before{
+  content: url('../img/App-remove.svg');
+}
+.icon-app:before{
+  content: url('../img/App.svg');
+}
 
+/* Markers*/
 .appensemble:not(.djs-connection) .djs-visual > * {
   stroke:  #0B2A51 !important; /* color elements as green */
   fill: #CDD4E2 !important;
-}
-.icon-appensemble{
-  background-image: url('../img/AppEnsemble.svg');
-}
-.icon-app-remove{
-  background-image: url('../img/App-remove.svg');
 }
 
 .no-app-assigned:not(.djs-connection) .djs-visual rect{
