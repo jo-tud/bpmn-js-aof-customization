@@ -55,32 +55,12 @@ a:link {
   visibility: visible;
 }
 
-.buttons {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
 
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.buttons > li {
-  display: inline-block;
-  margin-right: 10px;
-}
-.buttons > li > a {
-  background: #DDD;
-  border: solid 1px #666;
-  display: inline-block;
-  padding: 5px;
-}
-
-.buttons a {
+.defaultinactive a {
   opacity: 0.3;
 }
 
-.buttons a.active {
+.defaultinactive a.active {
   opacity: 1.0;
 }
 .icon-app,.icon-appensemble{
