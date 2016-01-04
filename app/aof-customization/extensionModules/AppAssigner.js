@@ -13,42 +13,16 @@ var forEach = require('lodash/collection/forEach'),
  * @param {ElementFactory} elementFactory
  */
 function AppAssigner(popupMenu, modeling, elementFactory) {
-    var options_url="../api/appuris";
-    /**
-     *  Function which gets the single Option entries
-     *  TODO: move Ajaxrequest to module-initialization and do it asynchroniosly
-     **/
-    function getOptionEntities() {
-        var jquery = require('jquery');
-        var request_data = {};
-
-        var request = jquery.ajax(options_url, {
-            success: function (data, status, jqXHR) {
-                data=JSON.parse(data);
-                if (data.results) {
-                    request_data = data.results.bindings;
-                }
-            },
-            method: "GET",
-            dataType: 'json',
-            async: false,
-            timeout: 1000,
-            data: '',
-            error: function (jqXHR, status, error) {
-                alert(status);
-            }
-        });
-
-        return request_data;
-    }
+    var options_url="http://127.0.0.1:8081/api/appuris";
+    this.options="";
 
     /**
      *  Function which provides the Options-Object for the popup-menu
      **/
-    function getOptions(element) {
+    this.getOptions=function(element) {
 
         var menuEntries = [];
-        addEntries(getOptionEntities(), markCurrentApp, setApp);
+        addEntries(this.options, markCurrentApp, setApp);
 
         // Adding a Menuentry for Manual creation of a App
         var manualOption=[{label: {value:'Enter other App'},uri: {value:''}}];
@@ -130,7 +104,7 @@ function AppAssigner(popupMenu, modeling, elementFactory) {
      *  Function called for openin the popUp-Menu
      **/
     this.openChooser = function (position, element) {
-        var entries = getOptions(element),headerEntries = [];
+        var entries = this.getOptions(element),headerEntries = [];
 
         var popUp = popupMenu.open({
             className: 'replace-menu',
@@ -142,6 +116,32 @@ function AppAssigner(popupMenu, modeling, elementFactory) {
         element.popUp = popUp;
     }
 
+    /**
+     *  Function which gets the single Option entries
+     **/
+    this.getOptionEntities=function() {
+        var jquery = require('jquery');
+        var request_data = {};
+
+        var request = jquery.ajax("/api/appuris", {
+            success: function (data, status, jqXHR) {
+                data=JSON.parse(data);
+                if (data.results) {
+                    request_data = data.results.bindings;
+                }
+            },
+            method: "GET",
+            async: false,
+            dataType: 'json',
+            timeout: 1000,
+            data: '',
+            error: function (jqXHR, status, error) {
+                alert(status);
+            }
+        });
+
+        this.options=request_data;
+    }
 }
 
 AppAssigner.$inject = ['popupMenu', 'modeling', 'elementFactory','elementRegistry'];

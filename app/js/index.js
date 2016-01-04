@@ -41,6 +41,7 @@ function openDiagram(renderer, xml) {
             var elementRegistry = renderer.get('elementRegistry');
             var canvasObject = renderer.get('canvas');
 
+
             // Mark AppEnsembleApps grey
             forEach(elementRegistry.filter(
                     function (element, gfx) {
@@ -60,6 +61,12 @@ function openDiagram(renderer, xml) {
                     canvasObject.addMarker(element.id, 'color-appensemble');
                 }
             );
+
+            // Load available Apps for UserTasks
+            if(mode!="view") {
+                var appAssignerObject = renderer.get('appAssigner');
+                appAssignerObject.getOptionEntities();
+            }
         }
 
 

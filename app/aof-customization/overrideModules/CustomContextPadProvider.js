@@ -209,9 +209,9 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                 title: 'Set App-Uri',
                 action: {
                     click: function(event,element){
-                        //appAssigner.openChooser(getReplaceMenuPosition(element), element);
                         modeling.updateProperties(element,{'aof:isAppEnsembleApp':true});
                         canvas.addMarker(element.id, 'color-appensembleapp');
+                        appAssigner.openChooser(getReplaceMenuPosition(element), element);
                     }
                 }
             }
