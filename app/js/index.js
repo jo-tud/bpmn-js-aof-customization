@@ -100,7 +100,7 @@ if (mode == "view") {
 else {
 
     var propertiesPanelModule = require('bpmn-js-properties-panel');
-    var propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/bpmn');
+    var propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/aof');
 
     var renderer = new BpmnModeler({
         container: canvas,
