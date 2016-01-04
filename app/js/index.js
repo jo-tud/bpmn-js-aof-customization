@@ -98,10 +98,17 @@ if (mode == "view") {
     var renderer = new BpmnViewer({container: canvas});
 }
 else {
+
+    var propertiesPanelModule = require('bpmn-js-properties-panel');
+    var propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/bpmn');
+
     var renderer = new BpmnModeler({
         container: canvas,
-        additionalModules: [AofCustomizationModules],
-        moddleExtensions: {aof: aofModdleExtention}
+        additionalModules: [propertiesPanelModule, propertiesProviderModule, AofCustomizationModules],
+        moddleExtensions: {aof: aofModdleExtention},
+        propertiesPanel: {
+            parent: '#js-properties-panel'
+        }
     });
 }
 if (mode == "view" || mode == "edit") {

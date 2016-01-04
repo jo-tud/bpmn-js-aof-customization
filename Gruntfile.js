@@ -29,6 +29,21 @@ module.exports = function(grunt) {
       }
     },
 
+    less: {
+      options: {
+        dumpLineNumbers: 'comments',
+        paths: [
+          'node_modules'
+        ]
+      },
+
+      styles: {
+        files: {
+          'dist/stylesheets/ae-modeler.css': 'app/stylesheets/app.less'
+        }
+      }
+    },
+
     browserify: {
       options: {
         browserifyOptions: {
@@ -88,7 +103,7 @@ module.exports = function(grunt) {
           {
             expand: true,
             cwd: '<%= config.sources %>/',
-            src: ['**/*.*', '!**/*.js', '!**/*.json'],
+            src: ['**/*.*', '!**/*.js', '!**/*.json','!**/*.less'],
             dest: '<%= config.dist %>'
           }
         ]
@@ -119,7 +134,7 @@ module.exports = function(grunt) {
 
   // tasks
 
-  grunt.registerTask('build', [ 'copy', 'browserify:app' ]);
+  grunt.registerTask('build', [ 'copy','less', 'browserify:app' ]);
 
   grunt.registerTask('transfer', [ 'browserify:transfer' ]);
 
