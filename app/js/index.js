@@ -45,7 +45,7 @@ function openDiagram(renderer, xml) {
             // Mark AppEnsembleApps grey
             forEach(elementRegistry.filter(
                     function (element, gfx) {
-                        return (element.type == "bpmn:UserTask" && element.businessObject.$attrs['aof:isAppEnsembleApp'] && element.businessObject.$attrs['aof:isAppEnsembleApp'] == "true" && element.businessObject.$attrs['aof:realizedBy'] && element.businessObject.$attrs['aof:realizedBy'] != "")
+                        return (element.type == "bpmn:UserTask" && element.businessObjectisAppEnsembleApp == true )//&& element.businessObject.$attrs['aof:realizedBy'] && element.businessObject.$attrs['aof:realizedBy'] != "")
                     }),
                 function (element) {
                     canvasObject.addMarker(element.id, 'color-appensembleapp');
