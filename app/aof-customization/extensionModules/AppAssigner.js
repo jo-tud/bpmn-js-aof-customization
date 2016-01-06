@@ -1,5 +1,7 @@
 /**
  * Created by Korbi on 04.09.2015.
+ *
+ * ### Not needed anymore for now
  */
 
 'use strict';
