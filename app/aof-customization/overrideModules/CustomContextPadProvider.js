@@ -12,7 +12,7 @@ var assign = require('lodash/object/assign'),
  */
 function CustomContextPadProvider(contextPad, modeling, elementFactory,
                             connect, create, bpmnReplace,
-                            canvas, appAssigner, eventBus) {
+                            canvas, eventBus) {
 
     contextPad.registerProvider(this);
 
@@ -187,7 +187,7 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
     }
 
     if (is(bpmnElement, 'bpmn:UserTask')) {
-        if(bpmnElement.$attrs["aof:isAppEnsembleApp"] && bpmnElement.$attrs["aof:isAppEnsembleApp"]==true){
+        if(bpmnElement.isAppEnsembleApp && bpmnElement.isAppEnsembleApp==true){
             assign(actions, {
                 'removeapp':{
                     group: 'edit',
@@ -202,20 +202,21 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                 }
             });
         }
-        assign(actions, {
-            'setapp':{
-                group: 'edit',
-                className: 'bpmn-icon-app',
-                title: 'Set App-Uri',
-                action: {
-                    click: function(event,element){
-                        modeling.updateProperties(element,{'aof:isAppEnsembleApp':true});
-                        canvas.addMarker(element.id, 'color-appensembleapp');
-                        appAssigner.openChooser(getReplaceMenuPosition(element), element);
+        else {
+            assign(actions, {
+                'setapp': {
+                    group: 'edit',
+                    className: 'bpmn-icon-app',
+                    title: 'Set App-Uri',
+                    action: {
+                        click: function (event, element) {
+                            modeling.updateProperties(element, {'aof:isAppEnsembleApp': true});
+                            canvas.addMarker(element.id, 'color-appensembleapp');
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     if(is(bpmnElement,'bpmn:Participant')){
