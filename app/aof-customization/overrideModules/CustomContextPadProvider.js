@@ -25,7 +25,6 @@ function CustomContextPadProvider(contextPad, modeling, elementFactory,
     this._create = create;
     this._bpmnReplace = bpmnReplace;
     this._canvas  = canvas;
-    this._appAssigner=appAssigner;
     this._eventBus=eventBus;
 }
 
