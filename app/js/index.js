@@ -64,8 +64,8 @@ function openDiagram(renderer, xml) {
 
             // Load available Apps for UserTasks
             if(mode!="view") {
-                var appAssignerObject = renderer.get('appAssigner');
-                appAssignerObject.getOptionEntities();
+                var ProviderObject = renderer.get('propertiesProvider');
+                ProviderObject.getAppURLs();
             }
         }
 
