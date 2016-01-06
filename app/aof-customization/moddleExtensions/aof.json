@@ -19,6 +19,17 @@
       ]
     },
     {
+      "name": "AppCustomization",
+      "extends": [ "bpmn:UserTask" ],
+      "properties": [
+        {
+          "name": "isAppEnsembleApp",
+          "isAttr": true,
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
       "name": "AppensembleCustomization",
       "extends": [ "bpmn:Participant" ],
       "properties": [
