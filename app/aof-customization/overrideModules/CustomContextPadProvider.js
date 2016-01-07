@@ -220,26 +220,46 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
     }
 
     if(is(bpmnElement,'bpmn:Participant')){
+        if(bpmnElement.isAppEnsemble && bpmnElement.isAppEnsemble==true) {
+            assign(actions, {
+                'partnerRole': {
+                    group: 'edit',
+                    className: 'bpmn-icon-appensemble-remove',
+                    title: 'Unmark App-Ensemble',
+                    action: {
+                        click: function (event, element) {
+                            var participant = element.businessObject, inputtext;
+                            var result = window.confirm('Do you really like remove the App-Ensemble property? There might be problems!');
+                            if (result) {
+                                modeling.updateProperties(element, {'aof:isAppEnsemble': false});
+                                canvas.removeMarker(element.id, 'color-appensemble');
 
-        assign(actions, {
-            'partnerRole': {
-                group: 'edit',
-                className: 'bpmn-icon-appensemble',
-                title: 'Mark as App-Ensemble',
-                action: {
-                    click: function(event,element){
-                        var participant=element.businessObject, inputtext;
-                        var result=window.confirm('Do you really like to mark the Participant ('+ participant.id+') as App-Ensemble?');
-                        if(result){
-                            modeling.updateProperties(element,{'aof:isAppEnsemble':true});
-                            canvas.addMarker(element.id, 'color-appensemble');
-
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
+        else{
+            assign(actions, {
+                'partnerRole': {
+                    group: 'edit',
+                    className: 'bpmn-icon-appensemble',
+                    title: 'Mark as App-Ensemble',
+                    action: {
+                        click: function (event, element) {
+                            var participant = element.businessObject, inputtext;
+                            var result = window.confirm('Do you really like to mark the Participant as App-Ensemble?');
+                            if (result) {
+                                modeling.updateProperties(element, {'aof:isAppEnsemble': true});
+                                canvas.addMarker(element.id, 'color-appensemble');
 
+                            }
+                        }
+                    }
+                }
+            });
+        }
     }
 
     // Delete Element Entry
