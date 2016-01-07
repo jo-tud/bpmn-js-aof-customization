@@ -29,7 +29,7 @@ module.exports = CustomRules;
 CustomRules.prototype.init = function() {
 
 
-    this.addRule('shapes.move',2000, function(context) {
+    this.addRule('elements.move',2000, function(context) {
 
         var target = context.target;
         if(!!target){   // !!=cast in boolean
