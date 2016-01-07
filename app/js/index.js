@@ -145,7 +145,35 @@ else {
         if ($(this).is('.active')) {
             e.preventDefault();
             e.stopPropagation();
-            var request = $.ajax($(this).attr('href'), {
+            /*$.ajax({
+                url: '/api/app-ensembles/Test-1/details',
+                statusCode: {
+                    404: function() {
+                        $.ajax($(this).attr('href'), {
+                            success: function (data, status, jqXHR) {
+                                container.before('<div data-alert class="alert-box success ">' + data + '</div>');
+                                setTimeout(function () {
+                                    $.when($('.alert-box').fadeOut(500))
+                                        .done(function () {
+                                            $('.alert-box').remove();
+                                        });
+                                }, 2000);
+                            },
+                            method: "GET",
+                            async: false,
+                            timeout: 1000,
+                            error: function (jqXHR, status, error) {
+                                container.before('<div data-alert class="alert-box warning">There was a Problem saving the Appensemble<a href="#" class="close">&times;</a></div>');
+                            }
+                        });
+                    },
+                    200: function(){
+                        alert("File already exists... choose another name!")
+                    }
+                }
+            });*/
+
+            $.ajax($(this).attr('href'), {
                 success: function (data, status, jqXHR) {
                     container.before('<div data-alert class="alert-box success ">' + data + '</div>');
                     setTimeout(function () {
@@ -158,10 +186,11 @@ else {
                 method: "GET",
                 async: false,
                 timeout: 1000,
-                error: function (jqXHR, status, error) {
-                    container.before('<div data-alert class="alert-box warning">There was a Problem saving the Appensemble<a href="#" class="close">&times;</a></div>');
+                error: function (responseObject, status, error) {
+                    container.before('<div data-alert class="alert-box warning">There was a Problem saving the App-Ensemble: '+responseObject.responseText +' ('+responseObject.statusText+') <a href="#" class="close">&times;</a></div>');
                 }
             });
+
         }
     });
 
@@ -187,8 +216,8 @@ else {
                 method: "GET",
                 async: false,
                 timeout: 1000,
-                error: function (jqXHR, status, error) {
-                    container.before('<div data-alert class="alert-box warning">There was a Problem saving the Appensemble<a href="#" class="close">&times;</a></div>');
+                error: function (responseObject, status, error) {
+                    container.before('<div data-alert class="alert-box warning">There was a Problem saving the App-Ensemble: '+responseObject.responseText +' ('+responseObject.statusText+') <a href="#" class="close">&times;</a></div>');
                 }
             });
         }
