@@ -10,7 +10,7 @@ module.exports.isExpanded = function(element) {
   }
 
   if (is(element, 'bpmn:SubProcess')) {
-    return getBusinessObject(element).di.isExpanded;
+    return !!getBusinessObject(element).di.isExpanded;
   }
 
   if (is(element, 'bpmn:Participant')) {
@@ -18,4 +18,12 @@ module.exports.isExpanded = function(element) {
   }
 
   return true;
+};
+
+module.exports.isInterrupting = function(element) {
+  return element && getBusinessObject(element).isInterrupting !== false;
+};
+
+module.exports.isEventSubProcess = function(element) {
+  return element && !!getBusinessObject(element).triggeredByEvent;
 };

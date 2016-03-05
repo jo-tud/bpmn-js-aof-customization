@@ -254,7 +254,7 @@ function setEncoded(link, name, data) {
 
     if (data) {
         link.addClass('active').attr({
-            'href': '/api/actions/app-ensembles/add?data=' + encodedData,
+            'href': '/api/actions/app-ensembles/add?mode='+mode+'&data=' + encodedData,
             'download': name
         });
     } else {
