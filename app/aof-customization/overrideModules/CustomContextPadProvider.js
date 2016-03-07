@@ -299,7 +299,6 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                             click: function(event,element){
                                 modeling.updateProperties(element,{'aof:isAppEnsembleApp':false});
                                 modeling.updateProperties(element,{'aof:realizedBy':""});
-                                canvas.removeMarker(element.id, 'color-appensembleapp');
                             }
                         }
                     }
@@ -314,7 +313,6 @@ CustomContextPadProvider.prototype.getContextPadEntries = function(element) {
                         action: {
                             click: function (event, element) {
                                 modeling.updateProperties(element, {'aof:isAppEnsembleApp': true});
-                                canvas.addMarker(element.id, 'color-appensembleapp');
                             }
                         }
                     }
