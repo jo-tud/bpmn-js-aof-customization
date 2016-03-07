@@ -10,7 +10,8 @@ else var urlencodedXML = urlParam('diagramXML');
 var fs = require('fs');
 var $ = require('jquery'),
     BpmnModeler = require('bpmn-js/lib/Modeler'),
-    BpmnViewer = require('bpmn-js/lib/Viewer');
+    BpmnViewer = require('bpmn-js/lib/Viewer'),
+    AofCustomizationModule=require('bpmn-js-aof');
 
 var forEach = require('lodash/collection/forEach');
 var container = $('#js-drop-zone');
@@ -19,7 +20,7 @@ var canvas = $('#js-canvas');
 // Reference to the custom Modules
 var AofCustomizationModules = require('./../aof-customization/index'), // affects activities
     aofModdleExtention = require('./../aof-customization/moddleExtensions/aof');
-var aofPalette=require('./../aof-customization/app-manager/index')
+//var aofPalette=require('./../aof-customization/app-manager/index')
 
 // Helper Functions
 
@@ -56,7 +57,7 @@ function openDiagram(renderer, xml) {
             // Mark AppEnsembles
             forEach(elementRegistry.filter(
                     function (element, gfx) {
-                        return (element.type == "bpmn:Participant" && (element.businessObject.$attrs['aof:isAppEnsemble'] && element.businessObject.$attrs['aof:isAppEnsemble'] == "true") || (element.businessObject.isAppEnsemble == true))
+                        return (element.type == "bpmn:Participant" && (element.businessObject.isAppEnsemble && element.businessObject.isAppEnsemble == "true") || (element.businessObject.isAppEnsemble == true))
                     }),
                 function (element) {
                     canvasObject.addMarker(element.id, 'color-appensemble');
@@ -105,7 +106,7 @@ else {
 
     var renderer = new BpmnModeler({
         container: canvas,
-        additionalModules: [propertiesPanelModule, propertiesProviderModule, AofCustomizationModules,aofPalette],
+        additionalModules: [AofCustomizationModule],
         moddleExtensions: {aof: aofModdleExtention},
         propertiesPanel: {
             parent: '#js-properties-panel'
