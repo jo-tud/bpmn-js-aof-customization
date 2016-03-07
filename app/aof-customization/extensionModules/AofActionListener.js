@@ -25,6 +25,14 @@ function UserTaskCreationListener(eventBus,canvas) {
                     canvas.addMarker(e.element.id, 'color-appensembleapp');
                 }
             }
+            else if(e.element.businessObject.$type=="bpmn:Participant"){
+                if(e.element.businessObject['aof:isAppEnsemble']){
+                    canvas.addMarker(e.element.id, 'color-appensemble');
+                }
+                else{
+                    canvas.removeMarker(e.element.id, 'color-appensemble');
+                }
+            }
         });
     });
 

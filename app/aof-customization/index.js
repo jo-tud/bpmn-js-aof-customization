@@ -3,9 +3,9 @@ var Modules = {
     replaceMenuProvider: [ 'type', require('./overrideModules/CustomReplaceMenuProvider') ],
     contextPadProvider: ['type', require('./overrideModules/CustomContextPadProvider.js')],
 //ExtensionModules
-    __init__: ['appAssigner','userTaskCreationListener','customRules','replaceMenuProvider','contextPadProvider'],
+    __init__: ['appAssigner','aofActionListener','customRules','replaceMenuProvider','contextPadProvider'],
     appAssigner: ['type', require('./extensionModules/AppAssigner.js')],
-    userTaskCreationListener: ['type', require('./extensionModules/UserTaskCreationListener.js')],
+    aofActionListener: ['type', require('./extensionModules/AofActionListener.js')],
     customRules: ['type', require('./extensionModules/CustomRules.js')]
 };
 
