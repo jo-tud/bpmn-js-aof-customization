@@ -2,7 +2,7 @@
 
 var  forEach = require('lodash/collection/forEach');
 
-function UserTaskCreationListener(eventBus,canvas) {
+function UserTaskCreationListener(eventBus,canvas,appManager) {
 
 
 // you may hook into any of the following events
@@ -14,6 +14,7 @@ function UserTaskCreationListener(eventBus,canvas) {
 
         eventBus.on(event, function (e) {
             // e.element = the model element
+            var a=appManager.list()
             // e.gfx = the graphical element
             if(e.element.businessObject.$type=="bpmn:UserTask"){
                 if(!e.element.businessObject['$attrs']['aof:realizedBy']){
@@ -38,6 +39,6 @@ function UserTaskCreationListener(eventBus,canvas) {
 
 }
 
-UserTaskCreationListener.$inject = [ 'eventBus','canvas'];
+UserTaskCreationListener.$inject = [ 'eventBus','canvas','appManager'];
 
 module.exports = UserTaskCreationListener;

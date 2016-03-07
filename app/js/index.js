@@ -19,6 +19,7 @@ var canvas = $('#js-canvas');
 // Reference to the custom Modules
 var AofCustomizationModules = require('./../aof-customization/index'), // affects activities
     aofModdleExtention = require('./../aof-customization/moddleExtensions/aof');
+var aofPalette=require('./../aof-customization/app-manager/index')
 
 // Helper Functions
 
@@ -104,7 +105,7 @@ else {
 
     var renderer = new BpmnModeler({
         container: canvas,
-        additionalModules: [propertiesPanelModule, propertiesProviderModule, AofCustomizationModules],
+        additionalModules: [propertiesPanelModule, propertiesProviderModule, AofCustomizationModules,aofPalette],
         moddleExtensions: {aof: aofModdleExtention},
         propertiesPanel: {
             parent: '#js-properties-panel'
