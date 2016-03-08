@@ -72,6 +72,9 @@ else {
         moddleExtensions: aofModdleExtention,
         propertiesPanel: {
             parent: '#js-properties-panel'
+        },
+        appManager:{
+            request_uri: "/api/appuris"
         }
     });
 }
