@@ -11,16 +11,11 @@ var fs = require('fs');
 var $ = require('jquery'),
     BpmnModeler = require('bpmn-js/lib/Modeler'),
     BpmnViewer = require('bpmn-js/lib/Viewer'),
-    AofCustomizationModule=require('bpmn-js-aof');
+    AofCustomizationModule=require('bpmn-js-aof'),
+    aofModdleExtention = require('bpmn-js-aof/moddle');
 
-var forEach = require('lodash/collection/forEach');
 var container = $('#js-drop-zone');
 var canvas = $('#js-canvas');
-
-// Reference to the custom Modules
-var AofCustomizationModules = require('./../aof-customization/index'), // affects activities
-    aofModdleExtention = require('./../aof-customization/moddleExtensions/aof');
-//var aofPalette=require('./../aof-customization/app-manager/index')
 
 // Helper Functions
 
@@ -71,13 +66,10 @@ if (mode == "view") {
 }
 else {
 
-    var propertiesPanelModule = require('bpmn-js-properties-panel');
-    var propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/aof');
-
     var renderer = new BpmnModeler({
         container: canvas,
         additionalModules: [AofCustomizationModule],
-        moddleExtensions: {aof: aofModdleExtention},
+        moddleExtensions: aofModdleExtention,
         propertiesPanel: {
             parent: '#js-properties-panel'
         }
