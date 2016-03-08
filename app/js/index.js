@@ -39,36 +39,6 @@ function openDiagram(renderer, xml) {
             container
                 .removeClass('with-error')
                 .addClass('with-diagram');
-
-            var elementRegistry = renderer.get('elementRegistry');
-            var canvasObject = renderer.get('canvas');
-
-
-            // Mark AppEnsembleApps grey
-            forEach(elementRegistry.filter(
-                    function (element, gfx) {
-                        return (element.type == "bpmn:UserTask" && element.businessObject.isAppEnsembleApp == true )//&& element.businessObject.$attrs['aof:realizedBy'] && element.businessObject.$attrs['aof:realizedBy'] != "")
-                    }),
-                function (element) {
-                    canvasObject.addMarker(element.id, 'color-appensembleapp');
-                }
-            );
-
-            // Mark AppEnsembles
-            forEach(elementRegistry.filter(
-                    function (element, gfx) {
-                        return (element.type == "bpmn:Participant" && (element.businessObject.isAppEnsemble && element.businessObject.isAppEnsemble == "true") || (element.businessObject.isAppEnsemble == true))
-                    }),
-                function (element) {
-                    canvasObject.addMarker(element.id, 'color-appensemble');
-                }
-            );
-
-            // Load available Apps for UserTasks
-            if(mode!="view") {
-                var ProviderObject = renderer.get('propertiesProvider');
-                ProviderObject.getAppURLs();
-            }
         }
 
 
