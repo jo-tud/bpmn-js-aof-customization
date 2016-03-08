@@ -74,7 +74,8 @@ else {
             parent: '#js-properties-panel'
         },
         appManager:{
-            request_uri: "/api/appuris"
+            request_uri: "/api/appuris",
+            info_uri_pattern: "/apps/#URI#/details.html"
         }
     });
 }
