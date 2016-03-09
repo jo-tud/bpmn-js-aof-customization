@@ -5,6 +5,8 @@ if (window.mode)var mode = window.mode;
 else var mode = urlParam('mode');
 if (window.urlencodedXML) var urlencodedXML = window.urlencodedXML;
 else var urlencodedXML = urlParam('diagramXML');
+if (window.del) var del = window.del;
+else var del = "";
 
 // Includes
 var fs = require('fs');
@@ -222,7 +224,7 @@ function setEncoded(link, name, data) {
 
     if (data) {
         link.addClass('active').attr({
-            'href': '/api/actions/app-ensembles/add?mode='+mode+'&data=' + encodedData,
+            'href': '/api/actions/app-ensembles/add?mode='+mode+'&del='+del+'&data=' + encodedData,
             'download': name
         });
     } else {
