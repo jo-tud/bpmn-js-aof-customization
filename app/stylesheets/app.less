@@ -64,38 +64,6 @@ a:link {
   opacity: 1.0;
 }
 
-/* Context Pad */
-.app-icon-active{
-  background-color: rgb(255, 252, 176);
-}
-.bpmn-icon-appensemble:before{
-  content: url('../img/AppEnsemble.svg');
-}
-.bpmn-icon-appensemble-remove:before{
-  content: url('../img/AppEnsemble-remove.svg');
-}
-.bpmn-icon-app-remove:before{
-  content: url('../img/App-remove.svg');
-}
-.bpmn-icon-app:before{
-  content: url('../img/App.svg');
-}
-
-/* Markers*/
-.color-appensemble:not(.djs-connection) .djs-visual > * {
-  stroke:  #426188 !important; /* color elements as green */
-  stroke-width: 1px !important;
-  fill:rgba(66, 97, 136, 0.13) !important;
-}
-
-.color-appensembleapp:not(.djs-connection) .djs-visual rect{
-  stroke:  #000 !important;
-  fill: #eee !important;
-}
-.color-appensembleapp:not(.djs-connection) .djs-visual path{
-  fill: #fff !important;
-}
-
 #js-save-appensemble,#close-modeler ,#js-download-svg,#js-save-appensemble-and-close{
   background-position:left center;
   background-size: 35px;
@@ -116,33 +84,4 @@ a:link {
   background-image: url('../img/iconmonstr-x-mark-4-icon.svg');
 }
 
-/* Properties Panel */
-#js-properties-panel {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 260px;
-  z-index: 10;
-  border-left: 1px solid #ccc;
-  border-top: 1px solid #ccc;
-  overflow: auto;
-  &:empty {
-    display: none;
-  }
-  > .djs-properties-panel {
-    padding-bottom: 70px;
-    min-height:100%;
-  }
-}
-
-.djs-palette div[data-group="aof"]{
-  background-color: rgba(31,35,131,0.1);
-}
-
-#js-drop-zone{
-  height:90%;
-}
-
-  /* Imports */
-@import "bpmn-js-properties-panel/styles/properties";
+@import "../node_modules/bpmn-js-aof/assets/styles";

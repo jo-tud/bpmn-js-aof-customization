@@ -39,7 +39,7 @@ module.exports = function(grunt) {
 
       styles: {
         files: {
-          'dist/stylesheets/ae-modeler.css': 'app/stylesheets/app.less'
+          '<%= config.dist %>/stylesheets/ae-modeler.css': '<%= config.sources %>/stylesheets/app.less'
         }
       }
     },
@@ -95,6 +95,16 @@ module.exports = function(grunt) {
             cwd: resolvePath('bpmn-js', 'assets'),
             src: ['**/*.*', '!**/*.js'],
             dest: '<%= config.dist %>/stylesheets'
+          }
+        ]
+      },
+      bpmn_js_aof: {
+        files: [
+          {
+            expand: true,
+            cwd: resolvePath('bpmn-js-aof', 'assets'),
+            src: ['**/*.*', '!**/*.less'],
+            dest: '<%= config.dist %>/img'
           }
         ]
       },

@@ -1,18 +1,13 @@
 # bpmn-js Modeler with customization for the [AOF] (https://github.com/plt-tud/aof)
 
 This project uses [bpmn-js](https://github.com/bpmn-io/bpmn-js) to implement a modeler for BPMN 2.0 process diagrams. 
-The base structure is taken from the [bpmn-js modeler example] (https://github.com/korbinianHoerfurter/bpmn-js-examples/tree/master/modeler)
+The base structure is taken from the [bpmn-js modeler example] (https://github.com/bpm-io/bpmn-js-examples/tree/master/modeler)
 
 ## About
 
-This example is a node-style web application that builds a user interface around the bpmn-js BPMN 2.0 modeler.
+This example is a node-style web application that builds a user interface around the bpmn-js BPMN 2.0 modeler customized for the AOF
 
-There are additional Modules for:
-- restricting Task types
-- assigning a Performer to Tasks
-- assigning a Role to Participants
-- providing an interface to communicate with the AOF
-
+![AOF integrated Modeler](./docs/screenshot.jpg "Screenshot of the example process.")
 
 ## Building
 
@@ -39,3 +34,7 @@ grunt auto-build
 Both tasks generate the distribution ready client-side modeler application into the `dist` folder.
 
 Serve the application locally or via a web server (nginx, apache, embedded).
+
+## License
+
+MIT
