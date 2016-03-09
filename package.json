@@ -1,6 +1,6 @@
 {
   "name": "bpmn-js-aof-customization",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A simple modeler built with bpmn-js and customized for the AOF",
   "main": "app/index.js",
   "repository": {
@@ -11,7 +11,7 @@
     "bpmn-js-aof-customization"
   ],
   "author": {
-    "name": "Korbinian Hörfurter"
+    "name": "Korbinian HÃ¶rfurter"
   },
   "contributors": [
     {
