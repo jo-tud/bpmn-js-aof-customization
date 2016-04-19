@@ -160,7 +160,7 @@ else {
                         $('#close-seconds').text("1")
                     }, 2000);
                     setTimeout(function () {
-                        window.location.href = document.referrer
+                        window.location.href = window.location.href.replace(/app-ensembles\/(.*$)/i, "app-ensembles/" + $('#js-save-appensemble').attr('reload') + "/details.html");
                     }, 3000);
                 },
                 method: "GET",
@@ -175,7 +175,7 @@ else {
 }
 
 closeLink.click(function () {
-    window.location.href = document.referrer;
+    window.location.href = window.location.href.replace(/(edit.html$)/i,"details.html");
 })
 
 $('.top-bar-section .right a').click(function (e) {
