@@ -76,7 +76,8 @@ else {
         additionalModules: [AofCustomizationModule],
         moddleExtensions: aofModdleExtention,
         propertiesPanel: {
-            parent: '#js-properties-panel'
+            parent: '#js-properties-panel',
+            control: '#js-properties-panel-control'
         },
         appManager:{
             request_uri: "/api/appuris",
