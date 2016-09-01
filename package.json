@@ -5,7 +5,7 @@
   "main": "app/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/korbinianHoerfurter/bpmn-js-aof-customization"
+    "url": "https://github.com/jo-tud/bpmn-js-aof-customization"
   },
   "keywords": [
     "bpmn-js-aof-customization"
@@ -37,6 +37,6 @@
     "jquery": "^2.1.1",
     "lodash": "^3.0.0",
     "inherits":"^2.0.1",
-    "bpmn-js-aof": "korbinianHoerfurter/bpmn-js-aof"
+    "bpmn-js-aof": "jo-tud/bpmn-js-aof"
   }
 }
